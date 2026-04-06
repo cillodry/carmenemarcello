@@ -79,7 +79,7 @@
     }
 
     /* ============================================
-       ENVELOPE OVERLAY
+       ENVELOPE OVERLAY (image-based)
        ============================================ */
     .envelope-overlay {
       position: fixed;
@@ -90,10 +90,9 @@
       z-index: 9999;
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: center;
       flex-direction: column;
-      /* Lo sfondo E' la busta */
-      background: linear-gradient(180deg, #f5ede4 0%, #ebe0d4 100%);
+      background: #ede6dc;
       cursor: pointer;
       transition: opacity 1s ease;
       overflow: hidden;
@@ -104,237 +103,34 @@
       pointer-events: none;
     }
 
-    .envelope-scene {
-      perspective: 1000px;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    /* ---- Busta: corpo = tutta la parte bassa dello schermo ---- */
-    .envelope {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 62%;
-      z-index: 3;
-      background: linear-gradient(180deg, #f0e6da 0%, #e8ddd3 100%);
-      box-shadow: 0 -2px 20px rgba(74, 64, 57, 0.08);
-    }
-
-    /* Pieghe laterali sottili */
-    .envelope::before,
-    .envelope::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      width: 50%;
-      height: 100%;
-      z-index: 1;
-    }
-    .envelope::before {
-      left: 0;
-      background: linear-gradient(135deg, rgba(0,0,0,0.02) 0%, transparent 40%);
-    }
-    .envelope::after {
-      right: 0;
-      background: linear-gradient(225deg, rgba(0,0,0,0.02) 0%, transparent 40%);
-    }
-
-    /* Fodera interna */
-    .envelope-liner {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 62%;
-      z-index: 2;
-      overflow: hidden;
-      background:
-        repeating-linear-gradient(
-          135deg,
-          transparent,
-          transparent 12px,
-          rgba(156, 175, 136, 0.06) 12px,
-          rgba(156, 175, 136, 0.06) 13px
-        ),
-        linear-gradient(180deg, #f5ede4 0%, #ebe0d4 100%);
-    }
-
-    .envelope-liner::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg,
-        var(--color-sage) 0%, var(--color-blush) 50%, var(--color-sage) 100%);
-      opacity: 0.4;
-    }
-
-    /* ---- Biglietto / Lettera ---- */
-    .envelope-letter {
-      position: absolute;
-      bottom: 5%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: min(320px, 75%);
+    .envelope-img {
+      width: 85%;
+      max-width: 500px;
       height: auto;
-      aspect-ratio: 3/4;
-      max-height: 55%;
-      z-index: 1;
-      background: linear-gradient(180deg, #FFFFFF 0%, #faf8f5 100%);
-      border: 1px solid rgba(212, 181, 160, 0.3);
-      border-radius: 8px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem 1.5rem;
-      box-shadow: 0 4px 20px rgba(74, 64, 57, 0.08);
-      transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.6s,
-                  z-index 0s linear 0.6s;
+      object-fit: contain;
+      transition: opacity 0.6s ease;
+      filter: drop-shadow(0 10px 40px rgba(74, 64, 57, 0.15));
     }
 
-    .envelope-overlay.open .envelope-letter {
-      transform: translateX(-50%) translateY(-90%);
-      z-index: 10;
+    .envelope-img.closed {
+      display: block;
     }
 
-    .envelope-letter .letter-ornament {
-      margin-bottom: 0.6rem;
-      opacity: 0.5;
+    .envelope-img.opened {
+      display: none;
     }
 
-    .envelope-letter .letter-ornament svg {
-      width: 50px;
-      height: auto;
+    .envelope-overlay.open .envelope-img.closed {
+      display: none;
     }
 
-    .envelope-letter .letter-names {
-      font-family: var(--font-serif);
-      font-size: clamp(1.3rem, 4.5vw, 2rem);
-      color: var(--color-text);
-      line-height: 1.2;
+    .envelope-overlay.open .envelope-img.opened {
+      display: block;
+      animation: fadeIn 0.5s ease;
     }
 
-    .envelope-letter .letter-amp {
-      font-family: var(--font-serif);
-      font-style: italic;
-      color: var(--color-sage);
-      font-size: clamp(0.9rem, 3vw, 1.1rem);
-      margin: 0.15rem 0;
-    }
-
-    .envelope-letter .letter-line {
-      width: 40px;
-      height: 1px;
-      background: var(--color-blush);
-      margin: 0.5rem auto;
-    }
-
-    .envelope-letter .letter-date {
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--color-text-light);
-    }
-
-    .envelope-letter .letter-subtitle {
-      font-family: var(--font-serif);
-      font-style: italic;
-      font-size: 0.8rem;
-      color: var(--color-blush);
-      margin-top: 0.3rem;
-    }
-
-    /* ---- Patta superiore (si ribalta in 3D) ---- */
-    .envelope-flap {
-      position: absolute;
-      /* La patta parte dal bordo superiore del corpo busta */
-      top: 38%;
-      left: 0;
-      width: 100%;
-      height: 40%;
-      z-index: 4;
-      transform-origin: top center;
-      transform-style: preserve-3d;
-      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    /* Faccia esterna della patta */
-    .envelope-flap-front {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-    }
-
-    .envelope-flap-front svg {
-      width: 100%;
-      height: 100%;
-      filter: drop-shadow(0 2px 4px rgba(74, 64, 57, 0.08));
-    }
-
-    /* Faccia interna della patta (visibile dopo il ribaltamento) */
-    .envelope-flap-back {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      transform: rotateX(180deg);
-    }
-
-    .envelope-flap-back svg {
-      width: 100%;
-      height: 100%;
-    }
-
-    .envelope-overlay.open .envelope-flap {
-      transform: rotateX(180deg);
-    }
-
-    /* ---- Sigillo ceralacca ---- */
-    .envelope-seal {
-      position: absolute;
-      top: calc(62% - 40px);
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 80px;
-      z-index: 5;
-      transition: opacity 0.3s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      filter: drop-shadow(0 3px 6px rgba(74, 64, 57, 0.2));
-    }
-
-    .envelope-overlay.open .envelope-seal {
-      opacity: 0;
-      transform: translateX(-50%) scale(0.3) rotate(-20deg);
-    }
-
-    /* Bordo irregolare ceralacca */
-    .seal-wax {
-      width: 100%;
-      height: 100%;
-      position: relative;
-    }
-
-    /* ---- Testo hint ---- */
     .envelope-hint {
-      position: absolute;
-      bottom: 8%;
-      left: 0;
-      width: 100%;
-      text-align: center;
+      margin-top: 2rem;
       font-family: var(--font-serif);
       font-style: italic;
       font-size: 0.95rem;
@@ -342,7 +138,6 @@
       opacity: 0.8;
       transition: opacity 0.5s ease;
       letter-spacing: 0.02em;
-      z-index: 10;
     }
 
     @keyframes hintBounce {
@@ -422,7 +217,7 @@
       overflow: hidden;
     }
 
-    /* Immagine della Basilica come sfondo hero */
+    /* Immagine della Basilica — inizia al 100%, sempre visibile */
     .hero::before {
       content: '';
       position: absolute;
@@ -431,12 +226,11 @@
       width: 100%;
       height: 100%;
       background: url('basilica.jpg') center top / cover no-repeat;
-      opacity: 0.45;
+      z-index: 0;
     }
 
-    /* Gradiente overlay per leggibilità testo */
-    .hero::after {
-      content: '';
+    /* Overlay semitrasparente che appare con i nomi */
+    .hero-overlay {
       position: absolute;
       top: 0;
       left: 0;
@@ -444,21 +238,29 @@
       height: 100%;
       background: linear-gradient(
         180deg,
-        rgba(250, 248, 245, 0.1) 0%,
-        rgba(250, 248, 245, 0.4) 45%,
-        rgba(250, 248, 245, 0.75) 70%,
+        rgba(250, 248, 245, 0.45) 0%,
+        rgba(250, 248, 245, 0.6) 35%,
+        rgba(250, 248, 245, 0.8) 60%,
         rgba(232, 221, 211, 0.95) 100%
       );
+      z-index: 1;
+      opacity: 0;
+      animation: fadeIn 1.5s ease 2s forwards;
     }
 
     .hero-content {
       position: relative;
-      z-index: 1;
-      animation: fadeInUp 1.2s ease forwards;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeInUp 1.5s ease 2.5s forwards;
     }
 
     .hero-floral {
       margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeIn 1.5s ease 2.5s forwards;
     }
 
     .hero-floral svg {
@@ -526,7 +328,9 @@
       bottom: 2rem;
       left: 50%;
       transform: translateX(-50%);
-      animation: fadeIn 1s ease 1.5s both;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeIn 1s ease 4s forwards;
     }
 
     .hero-scroll svg {
@@ -1386,106 +1190,8 @@
        Cliccando si apre la busta e si rivela il sito
        ============================================ -->
   <div class="envelope-overlay" id="envelopeOverlay">
-    <div class="envelope-scene">
-
-      <!-- Biglietto / Lettera (parte da dietro, sale sopra) -->
-      <div class="envelope-letter">
-        <div class="letter-ornament">
-          <svg viewBox="0 0 50 24" xmlns="http://www.w3.org/2000/svg">
-            <g fill="none" stroke="#9CAF88" stroke-width="0.8">
-              <path d="M5 12 Q15 4 25 12 Q35 4 45 12" />
-              <circle cx="25" cy="10" r="2" fill="#D4B5A0" stroke="none" opacity="0.6" />
-            </g>
-          </svg>
-        </div>
-        <div class="letter-names">Carmen</div>
-        <div class="letter-amp">&amp;</div>
-        <div class="letter-names">Marcello</div>
-        <div class="letter-line"></div>
-        <!-- PERSONALIZZA QUI: Data del matrimonio -->
-        <div class="letter-date">3 Ottobre 2026</div>
-        <div class="letter-subtitle"><span class="it">Vi aspettiamo</span><span class="es">Os esperamos</span></div>
-      </div>
-
-      <!-- Fodera interna decorata -->
-      <div class="envelope-liner"></div>
-
-      <!-- Corpo busta (sopra la lettera) -->
-      <div class="envelope"></div>
-
-      <!-- Patta superiore con fronte e retro -->
-      <div class="envelope-flap">
-        <!-- Faccia esterna -->
-        <div class="envelope-flap-front">
-          <svg viewBox="0 0 380 150" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="flapGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#ebe0d4" />
-                <stop offset="100%" stop-color="#e2d5c7" />
-              </linearGradient>
-            </defs>
-            <polygon points="0,0 380,0 190,148" fill="url(#flapGrad)" />
-            <!-- Ombra sottile lungo i bordi -->
-            <polygon points="0,0 380,0 190,148" fill="none" stroke="#d4c4b4" stroke-width="0.5" />
-            <!-- Ornamento floreale -->
-            <g opacity="0.25" transform="translate(190,55)">
-              <path d="M-20 0 Q-10 -12 0 0 Q10 -12 20 0" fill="none" stroke="#9CAF88" stroke-width="1"/>
-              <path d="M-12 0 Q-6 -7 0 0 Q6 -7 12 0" fill="none" stroke="#9CAF88" stroke-width="0.8"/>
-              <circle cx="0" cy="-4" r="2.5" fill="#D4B5A0" />
-              <path d="M-22 2 Q-26 -4 -20 -4" fill="none" stroke="#9CAF88" stroke-width="0.7"/>
-              <path d="M22 2 Q26 -4 20 -4" fill="none" stroke="#9CAF88" stroke-width="0.7"/>
-            </g>
-          </svg>
-        </div>
-        <!-- Faccia interna (visibile quando ribaltata) -->
-        <div class="envelope-flap-back">
-          <svg viewBox="0 0 380 150" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="0,0 380,0 190,148" fill="#e8ddd3" />
-            <!-- Pattern diagonale interno -->
-            <defs>
-              <pattern id="innerLines" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                <line x1="0" y1="0" x2="0" y2="12" stroke="#9CAF88" stroke-width="0.3" opacity="0.15"/>
-              </pattern>
-              <clipPath id="flapClip">
-                <polygon points="0,0 380,0 190,148" />
-              </clipPath>
-            </defs>
-            <rect width="380" height="150" fill="url(#innerLines)" clip-path="url(#flapClip)" />
-          </svg>
-        </div>
-      </div>
-
-      <!-- Sigillo ceralacca -->
-      <div class="envelope-seal">
-        <div class="seal-wax">
-          <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <radialGradient id="waxGrad" cx="38%" cy="32%">
-                <stop offset="0%" stop-color="#d4a088" />
-                <stop offset="50%" stop-color="#c08070" />
-                <stop offset="100%" stop-color="#a86858" />
-              </radialGradient>
-            </defs>
-            <!-- Forma irregolare ceralacca -->
-            <path d="M36 3 C42 3 50 6 55 10 C60 15 65 20 67 28 C68 35 67 43 63 49
-                     C59 55 53 60 47 64 C41 67 35 68 30 67 C23 66 17 62 12 57
-                     C7 51 4 44 3 37 C2 30 4 22 8 16 C12 10 19 6 25 4 C30 2 33 3 36 3Z"
-                  fill="url(#waxGrad)" />
-            <!-- Riflesso luce -->
-            <ellipse cx="28" cy="22" rx="10" ry="6" fill="white" opacity="0.1" transform="rotate(-20 28 22)" />
-            <!-- Anello interno -->
-            <circle cx="36" cy="36" r="22" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="0.8" />
-            <!-- Anello esterno decorativo -->
-            <circle cx="36" cy="36" r="26" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" />
-            <!-- Iniziali in corsivo elegante -->
-            <text x="36" y="38" text-anchor="middle" dominant-baseline="middle"
-                  font-family="Georgia, 'Times New Roman', serif" font-size="19" fill="rgba(255,255,255,0.9)"
-                  font-style="italic" letter-spacing="2">C &amp; M</text>
-          </svg>
-        </div>
-      </div>
-
-    </div>
+    <img class="envelope-img closed" src="busta-chiusa.jpg" alt="Invito">
+    <img class="envelope-img opened" src="busta-aperta.jpg" alt="Invito aperto">
     <div class="envelope-hint"><span class="it">Tocca per aprire l'invito</span><span class="es">Toca para abrir la invitación</span></div>
   </div>
 
@@ -1515,6 +1221,7 @@
        HERO
        ============================================ -->
   <section class="hero" id="hero">
+    <div class="hero-overlay"></div>
     <div class="hero-floral">
       <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
         <g fill="none" stroke="#9CAF88" stroke-width="1" opacity="0.7">
@@ -2026,18 +1733,17 @@
       overlay.addEventListener('click', function() {
         if (opened) return;
         opened = true;
-        // Avvia la musica al click (conta come user interaction)
+        // Avvia la musica al click
         if (window._startMusic) window._startMusic();
-        // Step 1: Apri la patta + dissolvi sigillo
+        // Step 1: Mostra busta aperta
         overlay.classList.add('open');
-        // Step 2: Dopo che la lettera è salita, sfuma l'overlay
+        // Step 2: Sfuma l'overlay
         setTimeout(function() {
           overlay.classList.add('hiding');
-          // Step 3: Rimuovi dal DOM
           setTimeout(function() {
             overlay.style.display = 'none';
           }, 1000);
-        }, 2800);
+        }, 1500);
       });
     })();
 
