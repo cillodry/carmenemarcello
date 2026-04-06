@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carmen & Marcello — Il Nostro Matrimonio</title>
+  <style>
+    /* ============================================
+       PERSONALIZZA QUI: COLORI E FONT
+       ============================================ */
+    :root {
+      --color-ivory: #FAF8F5;
+      --color-sand: #E8DDD3;
+      --color-blush: #D4B5A0;
+      --color-sage: #9CAF88;
+      --color-sage-dark: #7A9466;
+      --color-text: #4A4039;
+      --color-text-light: #7A6E63;
+      --color-white: #FFFFFF;
+      --color-accent: #C09E7F;
+      --font-serif: 'Georgia', 'Times New Roman', serif;
+      --font-sans: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    /* ============================================
+       RESET & BASE
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--color-text);
+      background-color: var(--color-ivory);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ============================================
+       ANIMAZIONI
+       ============================================ */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes gentlePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes drawLine {
+      from { width: 0; }
+      to { width: 80px; }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================
+       ENVELOPE OVERLAY
+       ============================================ */
+    .envelope-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background: linear-gradient(160deg, #FAF8F5 0%, #E8DDD3 50%, #ddd0c3 100%);
+      cursor: pointer;
+      transition: opacity 1s ease;
+    }
+
+    .envelope-overlay.hiding {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .envelope-scene {
+      perspective: 800px;
+      position: relative;
+      width: 300px;
+      height: 220px;
+    }
+
+    @media (min-width: 500px) {
+      .envelope-scene {
+        width: 380px;
+        height: 270px;
+      }
+    }
+
+    /* ---- Busta: corpo principale ---- */
+    .envelope {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 68%;
+      border-radius: 0 0 10px 10px;
+      z-index: 3;
+      /* Colore carta busta */
+      background: linear-gradient(180deg, #f5ede4 0%, #ebe0d4 100%);
+      box-shadow:
+        0 4px 6px rgba(74, 64, 57, 0.06),
+        0 12px 40px rgba(74, 64, 57, 0.12),
+        inset 0 1px 0 rgba(255,255,255,0.6);
+    }
+
+    /* Triangoli interni V della busta (le pieghe laterali) */
+    .envelope::before,
+    .envelope::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      z-index: 1;
+    }
+    .envelope::before {
+      left: 0;
+      background: linear-gradient(135deg, rgba(0,0,0,0.03) 0%, transparent 50%);
+    }
+    .envelope::after {
+      right: 0;
+      background: linear-gradient(225deg, rgba(0,0,0,0.03) 0%, transparent 50%);
+    }
+
+    /* Fodera interna (pattern decorativo visibile quando si apre) */
+    .envelope-liner {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 68%;
+      border-radius: 0 0 10px 10px;
+      z-index: 2;
+      overflow: hidden;
+      /* Pattern a righe diagonali delicate */
+      background:
+        repeating-linear-gradient(
+          135deg,
+          transparent,
+          transparent 8px,
+          rgba(156, 175, 136, 0.07) 8px,
+          rgba(156, 175, 136, 0.07) 9px
+        ),
+        linear-gradient(180deg, #faf6f1 0%, #f5ede4 100%);
+    }
+
+    .envelope-liner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg,
+        var(--color-sage) 0%, var(--color-blush) 50%, var(--color-sage) 100%);
+      opacity: 0.5;
+    }
+
+    /* ---- Biglietto / Lettera ---- */
+    .envelope-letter {
+      position: absolute;
+      bottom: 4%;
+      left: 8%;
+      width: 84%;
+      height: 85%;
+      z-index: 1;
+      background: linear-gradient(180deg, #FFFFFF 0%, #faf8f5 100%);
+      border: 1px solid rgba(212, 181, 160, 0.3);
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1.5rem 1rem;
+      box-shadow: 0 2px 12px rgba(74, 64, 57, 0.06);
+      transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.6s,
+                  z-index 0s linear 0.6s;
+    }
+
+    .envelope-overlay.open .envelope-letter {
+      transform: translateY(-105%);
+      z-index: 10;
+    }
+
+    .envelope-letter .letter-ornament {
+      margin-bottom: 0.6rem;
+      opacity: 0.5;
+    }
+
+    .envelope-letter .letter-ornament svg {
+      width: 50px;
+      height: auto;
+    }
+
+    .envelope-letter .letter-names {
+      font-family: var(--font-serif);
+      font-size: clamp(1.3rem, 4.5vw, 2rem);
+      color: var(--color-text);
+      line-height: 1.2;
+    }
+
+    .envelope-letter .letter-amp {
+      font-family: var(--font-serif);
+      font-style: italic;
+      color: var(--color-sage);
+      font-size: clamp(0.9rem, 3vw, 1.1rem);
+      margin: 0.15rem 0;
+    }
+
+    .envelope-letter .letter-line {
+      width: 40px;
+      height: 1px;
+      background: var(--color-blush);
+      margin: 0.5rem auto;
+    }
+
+    .envelope-letter .letter-date {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-text-light);
+    }
+
+    .envelope-letter .letter-subtitle {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.8rem;
+      color: var(--color-blush);
+      margin-top: 0.3rem;
+    }
+
+    /* ---- Patta superiore (si ribalta in 3D) ---- */
+    .envelope-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 55%;
+      z-index: 4;
+      transform-origin: top center;
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Faccia esterna della patta */
+    .envelope-flap-front {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+    }
+
+    .envelope-flap-front svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 2px 4px rgba(74, 64, 57, 0.08));
+    }
+
+    /* Faccia interna della patta (visibile dopo il ribaltamento) */
+    .envelope-flap-back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      transform: rotateX(180deg);
+    }
+
+    .envelope-flap-back svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .envelope-overlay.open .envelope-flap {
+      transform: rotateX(180deg);
+    }
+
+    /* ---- Sigillo ceralacca ---- */
+    .envelope-seal {
+      position: absolute;
+      bottom: calc(68% - 28px);
+      left: 50%;
+      transform: translateX(-50%);
+      width: 56px;
+      height: 56px;
+      z-index: 5;
+      transition: opacity 0.3s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      filter: drop-shadow(0 3px 6px rgba(74, 64, 57, 0.2));
+    }
+
+    .envelope-overlay.open .envelope-seal {
+      opacity: 0;
+      transform: translateX(-50%) scale(0.3) rotate(-20deg);
+    }
+
+    /* Bordo irregolare ceralacca */
+    .seal-wax {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    /* ---- Testo hint ---- */
+    .envelope-hint {
+      margin-top: 2.5rem;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--color-text-light);
+      opacity: 0.8;
+      transition: opacity 0.5s ease;
+      letter-spacing: 0.02em;
+    }
+
+    @keyframes hintBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .envelope-hint span {
+      display: inline-block;
+      animation: hintBounce 2s ease-in-out infinite;
+    }
+
+    .envelope-overlay.open .envelope-hint {
+      opacity: 0;
+    }
+
+    /* ============================================
+       NAVIGAZIONE
+       ============================================ */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(250, 248, 245, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(232, 221, 211, 0.5);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    nav.scrolled {
+      box-shadow: 0 2px 20px rgba(74, 64, 57, 0.08);
+    }
+
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0.8rem 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-inner a {
+      text-decoration: none;
+      color: var(--color-text-light);
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.7rem;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-inner a:hover,
+    .nav-inner a.active {
+      color: var(--color-sage-dark);
+      background: rgba(156, 175, 136, 0.12);
+    }
+
+    /* ============================================
+       HERO
+       ============================================ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 1.5rem 4rem;
+      position: relative;
+      background: linear-gradient(180deg, var(--color-ivory) 0%, var(--color-sand) 100%);
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at 30% 20%, rgba(156, 175, 136, 0.08) 0%, transparent 50%),
+                  radial-gradient(ellipse at 70% 80%, rgba(212, 181, 160, 0.1) 0%, transparent 50%);
+      animation: gentlePulse 15s ease-in-out infinite;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      animation: fadeInUp 1.2s ease forwards;
+    }
+
+    .hero-floral {
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-floral svg {
+      width: 120px;
+      height: auto;
+      opacity: 0.6;
+    }
+
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      color: var(--color-text);
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+      margin-bottom: 0.3rem;
+    }
+
+    .hero h1 .amp {
+      display: block;
+      font-size: 0.4em;
+      color: var(--color-sage);
+      margin: 0.2em 0;
+      font-style: italic;
+    }
+
+    .hero-line {
+      width: 0;
+      height: 1px;
+      background: var(--color-blush);
+      margin: 1.5rem auto;
+      animation: drawLine 1.5s ease 0.5s forwards;
+    }
+
+    .hero-date {
+      font-size: 1.1rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-text-light);
+      margin-bottom: 0.5rem;
+      animation: fadeIn 1s ease 0.8s both;
+    }
+
+    .hero-location {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--color-blush);
+      animation: fadeIn 1s ease 1s both;
+    }
+
+    .hero-quote {
+      margin-top: 2.5rem;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--color-text-light);
+      max-width: 450px;
+      animation: fadeIn 1s ease 1.2s both;
+      line-height: 1.8;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: fadeIn 1s ease 1.5s both;
+    }
+
+    .hero-scroll svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--color-blush);
+      animation: gentlePulse 2s ease-in-out infinite;
+    }
+
+    /* ============================================
+       SEZIONI GENERICHE
+       ============================================ */
+    section {
+      padding: 5rem 1.5rem;
+    }
+
+    .section-inner {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      text-align: center;
+      color: var(--color-text);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--color-text-light);
+      font-size: 0.9rem;
+      margin-bottom: 3rem;
+      font-style: italic;
+    }
+
+    .section-divider {
+      width: 50px;
+      height: 1px;
+      background: var(--color-sage);
+      margin: 0 auto 1rem;
+    }
+
+    section:nth-of-type(even) {
+      background-color: var(--color-white);
+    }
+
+    /* ============================================
+       ORNAMENTO FLOREALE SVG
+       ============================================ */
+    .floral-divider {
+      text-align: center;
+      margin: 2rem auto;
+      opacity: 0.4;
+    }
+
+    .floral-divider svg {
+      width: 60px;
+      height: auto;
+    }
+
+    /* ============================================
+       CHI SIAMO
+       ============================================ */
+    .about-text {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: var(--color-text);
+    }
+
+    .about-text p {
+      margin-bottom: 1.2rem;
+    }
+
+    .about-highlight {
+      font-family: var(--font-serif);
+      font-style: italic;
+      color: var(--color-sage-dark);
+      font-size: 1.15rem;
+    }
+
+    /* ============================================
+       DETTAGLI EVENTO
+       ============================================ */
+    .event-cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    @media (min-width: 600px) {
+      .event-cards {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .event-card {
+      background: var(--color-ivory);
+      border: 1px solid var(--color-sand);
+      border-radius: 12px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    section:nth-of-type(even) .event-card {
+      background: var(--color-white);
+      border-color: rgba(232, 221, 211, 0.6);
+    }
+
+    .event-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(74, 64, 57, 0.08);
+    }
+
+    .event-icon {
+      margin-bottom: 1rem;
+    }
+
+    .event-icon svg {
+      width: 40px;
+      height: 40px;
+      stroke: var(--color-sage);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .event-card h3 {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: var(--color-text);
+    }
+
+    .event-card p {
+      font-size: 0.95rem;
+      color: var(--color-text-light);
+      line-height: 1.7;
+    }
+
+    .event-card .event-time {
+      display: inline-block;
+      background: rgba(156, 175, 136, 0.12);
+      color: var(--color-sage-dark);
+      padding: 0.3rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      margin-top: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    .event-card .map-link {
+      display: inline-block;
+      margin-top: 0.8rem;
+      font-size: 0.85rem;
+      color: var(--color-sage-dark);
+      text-decoration: none;
+      border-bottom: 1px dashed var(--color-sage);
+      transition: border-color 0.3s ease;
+    }
+
+    .event-card .map-link:hover {
+      border-bottom-style: solid;
+    }
+
+    /* ============================================
+       INFO OSPITI
+       ============================================ */
+    .guest-cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    @media (min-width: 600px) {
+      .guest-cards {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .guest-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-sand);
+      border-radius: 12px;
+      padding: 2rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .guest-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(74, 64, 57, 0.08);
+    }
+
+    .guest-card h3 {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: 1.15rem;
+      margin-bottom: 0.8rem;
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .guest-card h3 svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--color-sage);
+      fill: none;
+      stroke-width: 1.5;
+      flex-shrink: 0;
+    }
+
+    .guest-card p {
+      font-size: 0.9rem;
+      color: var(--color-text-light);
+      line-height: 1.7;
+    }
+
+    .guest-card a {
+      color: var(--color-sage-dark);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(156, 175, 136, 0.3);
+      transition: border-color 0.3s ease;
+    }
+
+    .guest-card a:hover {
+      border-color: var(--color-sage-dark);
+    }
+
+    /* ============================================
+       LISTA NOZZE
+       ============================================ */
+    .gift-section {
+      text-align: center;
+    }
+
+    .gift-text {
+      max-width: 550px;
+      margin: 0 auto 2rem;
+      font-size: 1rem;
+      color: var(--color-text-light);
+      line-height: 1.8;
+    }
+
+    /* Card IBAN elegante */
+    .iban-card {
+      max-width: 440px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, #FFFFFF 0%, #faf8f5 100%);
+      border: 1px solid var(--color-sand);
+      border-radius: 14px;
+      padding: 2rem 1.8rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(74, 64, 57, 0.06);
+    }
+
+    .iban-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--color-sage), var(--color-blush), var(--color-sage));
+      opacity: 0.6;
+    }
+
+    .iban-card-icon {
+      margin-bottom: 1rem;
+    }
+
+    .iban-card-icon svg {
+      width: 36px;
+      height: 36px;
+      stroke: var(--color-sage);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .iban-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-text-light);
+      margin-bottom: 0.3rem;
+    }
+
+    .iban-value {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: clamp(0.78rem, 2.8vw, 0.95rem);
+      color: var(--color-text);
+      letter-spacing: 0.06em;
+      word-break: break-all;
+      margin-bottom: 1rem;
+      padding: 0.7rem 1rem;
+      background: rgba(232, 221, 211, 0.25);
+      border-radius: 8px;
+      border: 1px dashed rgba(212, 181, 160, 0.4);
+    }
+
+    .iban-intestatario {
+      font-size: 0.88rem;
+      color: var(--color-text);
+      margin-bottom: 1.2rem;
+    }
+
+    .iban-copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.6rem;
+      background: var(--color-sage);
+      color: var(--color-white);
+      border: 2px solid var(--color-sage);
+      border-radius: 50px;
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .iban-copy-btn:hover {
+      background: var(--color-sage-dark);
+      border-color: var(--color-sage-dark);
+    }
+
+    .iban-copy-btn svg {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .iban-copy-btn.copied {
+      background: var(--color-sage-dark);
+      border-color: var(--color-sage-dark);
+    }
+
+    .iban-footer-note {
+      margin-top: 1.2rem;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.78rem;
+      color: var(--color-text-light);
+      opacity: 0.7;
+    }
+
+    /* ============================================
+       RSVP FORM
+       ============================================ */
+    .rsvp-form {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    @media (min-width: 500px) {
+      .form-row.double {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      padding: 0.8rem 1rem;
+      border: 1px solid var(--color-sand);
+      border-radius: 8px;
+      background: var(--color-white);
+      color: var(--color-text);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--color-sage);
+      box-shadow: 0 0 0 3px rgba(156, 175, 136, 0.15);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-group select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237A6E63' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+    }
+
+    .rsvp-submit {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      margin-top: 1.5rem;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-white);
+      background: var(--color-sage);
+      border: 2px solid var(--color-sage);
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .rsvp-submit:hover {
+      background: var(--color-sage-dark);
+      border-color: var(--color-sage-dark);
+    }
+
+    .rsvp-submit:active {
+      transform: scale(0.98);
+    }
+
+    .rsvp-confirmation {
+      display: none;
+      text-align: center;
+      padding: 3rem 1rem;
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .rsvp-confirmation.show {
+      display: block;
+    }
+
+    .rsvp-confirmation svg {
+      width: 60px;
+      height: 60px;
+      stroke: var(--color-sage);
+      fill: none;
+      stroke-width: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    .rsvp-confirmation h3 {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .rsvp-confirmation p {
+      color: var(--color-text-light);
+      font-size: 0.95rem;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    footer {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      background: var(--color-sand);
+      color: var(--color-text-light);
+      font-size: 0.85rem;
+    }
+
+    footer .footer-names {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      color: var(--color-text);
+      margin-bottom: 0.5rem;
+    }
+
+    footer .footer-hashtag {
+      color: var(--color-sage-dark);
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+
+    /* ============================================
+       MUSIC PLAYER
+       ============================================ */
+    .music-toggle {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 900;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid var(--color-sand);
+      background: rgba(250, 248, 245, 0.95);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(74, 64, 57, 0.1);
+      transition: all 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .music-toggle.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .music-toggle:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 20px rgba(74, 64, 57, 0.15);
+    }
+
+    .music-toggle svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--color-sage-dark);
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+    }
+
+    /* Animazione barre audio quando suona */
+    .music-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2.5px;
+      height: 18px;
+    }
+
+    .music-bars span {
+      display: block;
+      width: 3px;
+      background: var(--color-sage-dark);
+      border-radius: 1.5px;
+      transition: height 0.2s ease;
+    }
+
+    .music-toggle.playing .music-bars span:nth-child(1) {
+      animation: barPulse 0.8s ease-in-out infinite 0s;
+    }
+    .music-toggle.playing .music-bars span:nth-child(2) {
+      animation: barPulse 0.8s ease-in-out infinite 0.15s;
+    }
+    .music-toggle.playing .music-bars span:nth-child(3) {
+      animation: barPulse 0.8s ease-in-out infinite 0.3s;
+    }
+    .music-toggle.playing .music-bars span:nth-child(4) {
+      animation: barPulse 0.8s ease-in-out infinite 0.45s;
+    }
+
+    .music-bars span {
+      height: 4px;
+    }
+
+    @keyframes barPulse {
+      0%, 100% { height: 4px; }
+      50% { height: 16px; }
+    }
+
+    /* Icona muto */
+    .music-toggle .icon-muted {
+      display: none;
+    }
+    .music-toggle:not(.playing) .icon-muted {
+      display: block;
+    }
+    .music-toggle:not(.playing) .music-bars {
+      display: none;
+    }
+
+    /* ============================================
+       LANGUAGE SWITCHER
+       ============================================ */
+    body[data-lang="it"] .es { display: none !important; }
+    body[data-lang="es"] .it { display: none !important; }
+
+    .lang-switch {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-left: 0.5rem;
+      background: rgba(232, 221, 211, 0.4);
+      border-radius: 20px;
+      padding: 2px;
+      font-size: 0.75rem;
+    }
+
+    .lang-switch button {
+      border: none;
+      background: none;
+      padding: 0.25rem 0.6rem;
+      border-radius: 18px;
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--color-text-light);
+      transition: all 0.3s ease;
+    }
+
+    .lang-switch button.active {
+      background: var(--color-white);
+      color: var(--color-sage-dark);
+      box-shadow: 0 1px 4px rgba(74, 64, 57, 0.1);
+    }
+
+    /* ============================================
+       UTILITIES
+       ============================================ */
+    @media (max-width: 480px) {
+      section {
+        padding: 3.5rem 1.2rem;
+      }
+
+      .nav-inner {
+        gap: 0.2rem;
+      }
+
+      .nav-inner a {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body data-lang="it">
+
+  <!-- ============================================
+       ANIMAZIONE BUSTA D'INVITO
+       Cliccando si apre la busta e si rivela il sito
+       ============================================ -->
+  <div class="envelope-overlay" id="envelopeOverlay">
+    <div class="envelope-scene">
+
+      <!-- Biglietto / Lettera (parte da dietro, sale sopra) -->
+      <div class="envelope-letter">
+        <div class="letter-ornament">
+          <svg viewBox="0 0 50 24" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke="#9CAF88" stroke-width="0.8">
+              <path d="M5 12 Q15 4 25 12 Q35 4 45 12" />
+              <circle cx="25" cy="10" r="2" fill="#D4B5A0" stroke="none" opacity="0.6" />
+            </g>
+          </svg>
+        </div>
+        <div class="letter-names">Carmen</div>
+        <div class="letter-amp">&amp;</div>
+        <div class="letter-names">Marcello</div>
+        <div class="letter-line"></div>
+        <!-- PERSONALIZZA QUI: Data del matrimonio -->
+        <div class="letter-date">3 Ottobre 2026</div>
+        <div class="letter-subtitle"><span class="it">Vi aspettiamo</span><span class="es">Os esperamos</span></div>
+      </div>
+
+      <!-- Fodera interna decorata -->
+      <div class="envelope-liner"></div>
+
+      <!-- Corpo busta (sopra la lettera) -->
+      <div class="envelope"></div>
+
+      <!-- Patta superiore con fronte e retro -->
+      <div class="envelope-flap">
+        <!-- Faccia esterna -->
+        <div class="envelope-flap-front">
+          <svg viewBox="0 0 380 150" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="flapGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ebe0d4" />
+                <stop offset="100%" stop-color="#e2d5c7" />
+              </linearGradient>
+            </defs>
+            <polygon points="0,0 380,0 190,148" fill="url(#flapGrad)" />
+            <!-- Ombra sottile lungo i bordi -->
+            <polygon points="0,0 380,0 190,148" fill="none" stroke="#d4c4b4" stroke-width="0.5" />
+            <!-- Ornamento floreale -->
+            <g opacity="0.25" transform="translate(190,55)">
+              <path d="M-20 0 Q-10 -12 0 0 Q10 -12 20 0" fill="none" stroke="#9CAF88" stroke-width="1"/>
+              <path d="M-12 0 Q-6 -7 0 0 Q6 -7 12 0" fill="none" stroke="#9CAF88" stroke-width="0.8"/>
+              <circle cx="0" cy="-4" r="2.5" fill="#D4B5A0" />
+              <!-- Foglioline -->
+              <path d="M-22 2 Q-26 -4 -20 -4" fill="none" stroke="#9CAF88" stroke-width="0.7"/>
+              <path d="M22 2 Q26 -4 20 -4" fill="none" stroke="#9CAF88" stroke-width="0.7"/>
+            </g>
+          </svg>
+        </div>
+        <!-- Faccia interna (visibile quando ribaltata) -->
+        <div class="envelope-flap-back">
+          <svg viewBox="0 0 380 150" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="0,0 380,0 190,148" fill="#f0e8de" />
+            <!-- Pattern diagonale interno -->
+            <defs>
+              <pattern id="innerLines" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <line x1="0" y1="0" x2="0" y2="12" stroke="#9CAF88" stroke-width="0.3" opacity="0.2"/>
+              </pattern>
+              <clipPath id="flapClip">
+                <polygon points="0,0 380,0 190,148" />
+              </clipPath>
+            </defs>
+            <rect width="380" height="150" fill="url(#innerLines)" clip-path="url(#flapClip)" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Sigillo ceralacca -->
+      <div class="envelope-seal">
+        <div class="seal-wax">
+          <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="waxGrad" cx="40%" cy="35%">
+                <stop offset="0%" stop-color="#d4a088" />
+                <stop offset="60%" stop-color="#c4897a" />
+                <stop offset="100%" stop-color="#b07868" />
+              </radialGradient>
+            </defs>
+            <!-- Forma irregolare ceralacca -->
+            <path d="M28 2 C34 3 40 5 44 8 C48 12 51 16 52 22 C53 28 52 34 50 38
+                     C47 43 44 47 40 50 C36 52 30 54 26 54 C20 53 15 51 11 47
+                     C7 43 4 38 3 33 C2 27 3 21 5 16 C8 10 13 6 18 4 C22 2 25 2 28 2Z"
+                  fill="url(#waxGrad)" />
+            <!-- Riflesso luce -->
+            <ellipse cx="22" cy="18" rx="8" ry="5" fill="white" opacity="0.1" transform="rotate(-20 22 18)" />
+            <!-- Anello interno -->
+            <circle cx="28" cy="28" r="16" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="0.8" />
+            <!-- Iniziali -->
+            <text x="28" y="30" text-anchor="middle" dominant-baseline="middle"
+                  font-family="Georgia, serif" font-size="15" fill="rgba(255,255,255,0.85)"
+                  font-style="italic" letter-spacing="1">C&amp;M</text>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+    <div class="envelope-hint"><span class="it">Tocca per aprire l'invito</span><span class="es">Toca para abrir la invitación</span></div>
+  </div>
+
+  <!-- ============================================
+       NAVIGAZIONE
+       ============================================ -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="#hero">Home</a>
+      <a href="#chi-siamo"><span class="it">Chi Siamo</span><span class="es">Nosotros</span></a>
+      <a href="#dettagli"><span class="it">Dettagli</span><span class="es">Detalles</span></a>
+      <a href="#info">Info</a>
+      <a href="#lista-nozze"><span class="it">Regalo</span><span class="es">Regalo</span></a>
+      <a href="#rsvp">RSVP</a>
+      <div class="lang-switch" id="langSwitch">
+        <button class="active" data-lang="it">IT</button>
+        <button data-lang="es">ES</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       HERO
+       ============================================ -->
+  <section class="hero" id="hero">
+    <div class="hero-floral">
+      <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none" stroke="#9CAF88" stroke-width="1" opacity="0.7">
+          <path d="M60 55 Q40 40 20 45" />
+          <path d="M35 42 Q30 35 25 38" />
+          <path d="M45 46 Q38 38 32 42" />
+          <ellipse cx="20" cy="45" rx="6" ry="3" transform="rotate(-20 20 45)" stroke="#D4B5A0" />
+          <ellipse cx="25" cy="38" rx="4" ry="2.5" transform="rotate(-30 25 38)" stroke="#D4B5A0" />
+          <path d="M60 55 Q80 40 100 45" />
+          <path d="M85 42 Q90 35 95 38" />
+          <path d="M75 46 Q82 38 88 42" />
+          <ellipse cx="100" cy="45" rx="6" ry="3" transform="rotate(20 100 45)" stroke="#D4B5A0" />
+          <ellipse cx="95" cy="38" rx="4" ry="2.5" transform="rotate(30 95 38)" stroke="#D4B5A0" />
+          <path d="M55 50 Q50 42 52 35" />
+          <path d="M65 50 Q70 42 68 35" />
+          <ellipse cx="52" cy="35" rx="3" ry="5" transform="rotate(-10 52 35)" stroke="#9CAF88" />
+          <ellipse cx="68" cy="35" rx="3" ry="5" transform="rotate(10 68 35)" stroke="#9CAF88" />
+        </g>
+      </svg>
+    </div>
+
+    <div class="hero-content">
+      <h1>
+        Carmen
+        <span class="amp">&amp;</span>
+        Marcello
+      </h1>
+
+      <div class="hero-line"></div>
+
+      <!-- PERSONALIZZA QUI: Data del matrimonio -->
+      <p class="hero-date">3 Ottobre 2026</p>
+
+      <p class="hero-location">Capodimonte — Napoli</p>
+
+      <p class="hero-quote">
+        <span class="it">"In te ho trovato il luogo in cui il mio cuore<br>ha sempre voluto abitare."</span>
+        <span class="es">"En ti encontré el lugar donde mi corazón<br>siempre quiso vivir."</span>
+      </p>
+    </div>
+
+    <div class="hero-scroll">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ============================================
+       CHI SIAMO
+       PERSONALIZZA: Testo sulla coppia
+       ============================================ -->
+  <section id="chi-siamo">
+    <div class="section-inner fade-in">
+      <div class="section-divider"></div>
+      <h2 class="section-title"><span class="it">Chi Siamo</span><span class="es">Quiénes Somos</span></h2>
+      <p class="section-subtitle"><span class="it">La nostra storia</span><span class="es">Nuestra historia</span></p>
+
+      <div class="about-text">
+        <!-- PERSONALIZZA QUI: La vostra storia -->
+        <span class="it">
+          <p>
+            Ci siamo incontrati in un giorno qualunque che è diventato il giorno più importante
+            delle nostre vite. Da allora, ogni momento insieme è stato un piccolo miracolo fatto
+            di risate, sogni condivisi e tazze di caffè la mattina.
+          </p>
+          <p>
+            Dopo <strong>X anni</strong> di avventure insieme, abbiamo deciso di promettere
+            davanti alle persone che amiamo di più ciò che i nostri cuori sanno già da tempo.
+          </p>
+          <p class="about-highlight">
+            E saremmo felicissimi di avervi al nostro fianco in questo giorno speciale.
+          </p>
+        </span>
+        <span class="es">
+          <p>
+            Nos conocimos en un día cualquiera que se convirtió en el día más importante
+            de nuestras vidas. Desde entonces, cada momento juntos ha sido un pequeño milagro
+            hecho de risas, sueños compartidos y tazas de café por la mañana.
+          </p>
+          <p>
+            Después de <strong>X años</strong> de aventuras juntos, hemos decidido prometer
+            ante las personas que más queremos lo que nuestros corazones ya saben desde hace tiempo.
+          </p>
+          <p class="about-highlight">
+            Y estaríamos felices de teneros a nuestro lado en este día tan especial.
+          </p>
+        </span>
+      </div>
+
+      <div class="floral-divider">
+        <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
+          <g fill="none" stroke="#9CAF88" stroke-width="0.8">
+            <path d="M5 15 Q20 5 30 15 Q40 5 55 15" />
+            <path d="M15 15 Q20 10 25 15" />
+            <path d="M35 15 Q40 10 45 15" />
+            <circle cx="30" cy="15" r="2" fill="#D4B5A0" stroke="none" opacity="0.5" />
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       DETTAGLI EVENTO
+       ============================================ -->
+  <section id="dettagli">
+    <div class="section-inner fade-in">
+      <div class="section-divider"></div>
+      <h2 class="section-title"><span class="it">Il Grande Giorno</span><span class="es">El Gran Día</span></h2>
+      <p class="section-subtitle"><span class="it">Tutti i dettagli per non perdervi nulla</span><span class="es">Todos los detalles para que no os perdáis nada</span></p>
+
+      <div class="event-cards">
+        <!-- Card Cerimonia -->
+        <div class="event-card">
+          <div class="event-icon">
+            <svg viewBox="0 0 40 40">
+              <path d="M20 4L20 12" />
+              <path d="M16 8L24 8" />
+              <path d="M8 20L20 12L32 20" />
+              <rect x="10" y="20" width="20" height="14" rx="1" />
+              <rect x="17" y="26" width="6" height="8" />
+              <path d="M14 24a2 2 0 0 1 4 0" />
+              <path d="M22 24a2 2 0 0 1 4 0" />
+            </svg>
+          </div>
+          <h3><span class="it">Cerimonia</span><span class="es">Ceremonia</span></h3>
+          <p>
+            <strong>Basilica dell'Incoronata<br>Madre del Buon Consiglio</strong><br>
+            Via Capodimonte 13, 80136 Napoli
+          </p>
+          <!-- PERSONALIZZA QUI: Orario cerimonia -->
+          <span class="event-time"><span class="it">Ore</span><span class="es">Horas</span> 16:30</span><br>
+          <a class="map-link" href="https://maps.app.goo.gl/C1wNJRewPiaG89HC9" target="_blank" rel="noopener"><span class="it">Apri in Google Maps</span><span class="es">Abrir en Google Maps</span></a>
+        </div>
+
+        <!-- Card Ricevimento -->
+        <div class="event-card">
+          <div class="event-icon">
+            <svg viewBox="0 0 40 40">
+              <path d="M12 8h16l-3 14h-10z" />
+              <path d="M20 22v8" />
+              <path d="M14 30h12" />
+              <path d="M10 8h20" />
+              <circle cx="28" cy="12" r="3" />
+            </svg>
+          </div>
+          <h3><span class="it">Ricevimento</span><span class="es">Recepción</span></h3>
+          <p>
+            <strong>Tenuta Torelli</strong><br>
+            Via Capodimonte 27/27A, 80131 Napoli
+          </p>
+          <!-- PERSONALIZZA QUI: Orario ricevimento -->
+          <span class="event-time"><span class="it">Dalle ore</span><span class="es">Desde las</span> 18:00</span><br>
+          <a class="map-link" href="https://maps.app.goo.gl/PEtkXGdrFZ1sAe1h6" target="_blank" rel="noopener"><span class="it">Apri in Google Maps</span><span class="es">Abrir en Google Maps</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       INFORMAZIONI OSPITI
+       PERSONALIZZA: Hotel, indicazioni
+       ============================================ -->
+  <section id="info">
+    <div class="section-inner fade-in">
+      <div class="section-divider"></div>
+      <h2 class="section-title"><span class="it">Informazioni Utili</span><span class="es">Información Útil</span></h2>
+      <p class="section-subtitle"><span class="it">Tutto ciò che vi serve per organizzarvi</span><span class="es">Todo lo que necesitáis para organizaros</span></p>
+
+      <div class="guest-cards">
+        <!-- Hotel 1 -->
+        <div class="guest-card">
+          <h3>
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 17V7" /><path d="M21 17V11a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v6" />
+              <path d="M3 17h18" /><circle cx="6" cy="11" r="2" />
+              <path d="M3 21h18" />
+            </svg>
+            <!-- PERSONALIZZA QUI: Nome hotel -->
+            Hotel Esempio 1
+          </h3>
+          <!-- PERSONALIZZA QUI: Dettagli hotel -->
+          <p>
+            Via Esempio 10, Napoli — a 5 min dalla location.<br>
+            Tel: <a href="tel:+390000000000">+39 000 000 0000</a><br>
+            Convenzione sposi: "Secca D'Aragona &amp; Cognome"
+          </p>
+        </div>
+
+        <!-- Hotel 2 -->
+        <div class="guest-card">
+          <h3>
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 17V7" /><path d="M21 17V11a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v6" />
+              <path d="M3 17h18" /><circle cx="6" cy="11" r="2" />
+              <path d="M3 21h18" />
+            </svg>
+            <!-- PERSONALIZZA QUI: Nome hotel -->
+            Hotel Esempio 2
+          </h3>
+          <!-- PERSONALIZZA QUI: Dettagli hotel -->
+          <p>
+            Via Esempio 20, Napoli — a 10 min dalla location.<br>
+            Tel: <a href="tel:+390000000000">+39 000 000 0000</a><br>
+            B&B accogliente con colazione inclusa.
+          </p>
+        </div>
+
+        <!-- Come arrivare -->
+        <div class="guest-card">
+          <h3>
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+              <circle cx="12" cy="9" r="2.5" />
+            </svg>
+            <span class="it">Come Arrivare</span><span class="es">Cómo Llegar</span>
+          </h3>
+          <p>
+            <span class="it">
+              <strong>In auto:</strong> Tangenziale di Napoli, uscita "Capodimonte",
+              proseguire per Via Capodimonte.<br><br>
+              <strong>In metro:</strong> Linea 1, fermata "Museo" o "Materdei",
+              poi autobus o taxi (~10 min).
+            </span>
+            <span class="es">
+              <strong>En coche:</strong> Tangenziale di Napoli, salida "Capodimonte",
+              continuar por Via Capodimonte.<br><br>
+              <strong>En metro:</strong> Línea 1, parada "Museo" o "Materdei",
+              luego autobús o taxi (~10 min).
+            </span>
+          </p>
+        </div>
+
+        <!-- Dress code o note -->
+        <div class="guest-card">
+          <h3>
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" />
+            </svg>
+            <span class="it">Note per gli Ospiti</span><span class="es">Notas para los Invitados</span>
+          </h3>
+          <p>
+            <span class="it">
+              <strong>Dress code:</strong> Elegante informale. Evitiamo il bianco,
+              quello lo teniamo per la sposa!<br><br>
+              <strong>Parcheggio:</strong> Ampio parcheggio gratuito presso Tenuta Torelli.
+            </span>
+            <span class="es">
+              <strong>Dress code:</strong> Elegante informal. Evitemos el blanco,
+              eso se lo dejamos a la novia!<br><br>
+              <strong>Aparcamiento:</strong> Amplio aparcamiento gratuito en Tenuta Torelli.
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       REGALO / CONTRIBUTO
+       ============================================ -->
+  <section id="lista-nozze">
+    <div class="section-inner fade-in gift-section">
+      <div class="section-divider"></div>
+      <h2 class="section-title"><span class="it">Il Vostro Dono</span><span class="es">Vuestro Regalo</span></h2>
+      <p class="section-subtitle"><span class="it">Un gesto d'affetto per il nostro futuro insieme</span><span class="es">Un gesto de cariño para nuestro futuro juntos</span></p>
+
+      <p class="gift-text">
+        <span class="it">La vostra presenza è il regalo più grande che possiate farci.
+        Se però desiderate accompagnarci con un pensiero,
+        potete contribuire alla realizzazione del nostro sogno
+        attraverso un piccolo dono.</span>
+        <span class="es">Vuestra presencia es el regalo más grande que podéis hacernos.
+        Pero si deseáis acompañarnos con un detalle,
+        podéis contribuir a la realización de nuestro sueño
+        con un pequeño obsequio.</span>
+      </p>
+
+      <div class="floral-divider">
+        <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
+          <g fill="none" stroke="#9CAF88" stroke-width="0.8">
+            <path d="M10 20 Q15 10 20 15 Q25 10 30 15 Q35 10 40 15 Q45 10 50 20" />
+            <circle cx="20" cy="13" r="2" fill="#D4B5A0" stroke="none" opacity="0.4" />
+            <circle cx="40" cy="13" r="2" fill="#D4B5A0" stroke="none" opacity="0.4" />
+          </g>
+        </svg>
+      </div>
+
+      <div class="iban-card">
+        <div class="iban-card-icon">
+          <!-- Icona regalo/cuore -->
+          <svg viewBox="0 0 24 24">
+            <path d="M20 12v10H4V12" />
+            <path d="M2 7h20v5H2z" />
+            <path d="M12 22V7" />
+            <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+            <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+          </svg>
+        </div>
+
+        <div class="iban-label"><span class="it">Intestatario</span><span class="es">Titular</span></div>
+        <!-- PERSONALIZZA QUI: Nome intestatario conto -->
+        <p class="iban-intestatario"><strong>Carmen Cognome &amp; Marcello Secca D'Aragona</strong></p>
+
+        <div class="iban-label">IBAN</div>
+        <!-- PERSONALIZZA QUI: Il vostro IBAN -->
+        <div class="iban-value" id="ibanValue">IT00 X000 0000 0000 0000 0000 000</div>
+
+        <button class="iban-copy-btn" id="copyIbanBtn" onclick="copyIban()">
+          <svg viewBox="0 0 24 24">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+          </svg>
+          <span class="it">Copia IBAN</span><span class="es">Copiar IBAN</span>
+        </button>
+
+        <p class="iban-footer-note"><span class="it">Con affetto, grazie di cuore</span><span class="es">Con cariño, gracias de corazón</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       RSVP
+       ============================================ -->
+  <section id="rsvp">
+    <div class="section-inner fade-in">
+      <div class="section-divider"></div>
+      <h2 class="section-title">RSVP</h2>
+      <p class="section-subtitle">
+        <span class="it">Conferma la tua presenza entro il <!-- PERSONALIZZA: data limite --> 00/00/2026</span>
+        <span class="es">Confirma tu asistencia antes del <!-- PERSONALIZZA: data limite --> 00/00/2026</span>
+      </p>
+
+      <form class="rsvp-form" id="rsvpForm" onsubmit="return handleRsvp(event)">
+        <div class="form-row double">
+          <div class="form-group">
+            <label for="nome"><span class="it">Nome *</span><span class="es">Nombre *</span></label>
+            <input type="text" id="nome" name="nome" required>
+          </div>
+          <div class="form-group">
+            <label for="cognome"><span class="it">Cognome *</span><span class="es">Apellido *</span></label>
+            <input type="text" id="cognome" name="cognome" required>
+          </div>
+        </div>
+
+        <div class="form-row double">
+          <div class="form-group">
+            <label for="ospiti"><span class="it">Numero Ospiti *</span><span class="es">Número de Invitados *</span></label>
+            <input type="number" id="ospiti" name="ospiti" min="1" max="10" value="1" required>
+          </div>
+          <div class="form-group">
+            <label for="menu"><span class="it">Preferenza Menu *</span><span class="es">Preferencia Menú *</span></label>
+            <select id="menu" name="menu" required>
+              <option value="" disabled selected><span class="it">Scegli...</span><span class="es">Elige...</span></option>
+              <option value="normale"><span class="it">Normale</span><span class="es">Normal</span></option>
+              <option value="vegetariano"><span class="it">Vegetariano</span><span class="es">Vegetariano</span></option>
+              <option value="allergico"><span class="it">Allergico / Intolleranze</span><span class="es">Alérgico / Intolerancias</span></option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="note"><span class="it">Note</span><span class="es">Notas</span></label>
+            <textarea id="note" name="note"></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="rsvp-submit"><span class="it">Conferma Presenza</span><span class="es">Confirmar Asistencia</span></button>
+      </form>
+
+      <div class="rsvp-confirmation" id="rsvpConfirmation">
+        <svg viewBox="0 0 60 60" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="30" cy="30" r="25" />
+          <path d="M20 30l7 7 13-13" stroke-width="2" />
+        </svg>
+        <h3><span class="it">Grazie di cuore!</span><span class="es">Gracias de corazón!</span></h3>
+        <p><span class="it">La tua conferma è stata registrata. Non vediamo l'ora di festeggiare insieme a te!</span><span class="es">Tu confirmación ha sido registrada. Estamos deseando celebrar contigo!</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       MUSIC PLAYER
+       PERSONALIZZA QUI: Metti il file MP3 nella stessa
+       cartella e aggiorna il nome in src qui sotto.
+       ============================================ -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="photograph.mp3" type="audio/mpeg">
+  </audio>
+
+  <button class="music-toggle" id="musicToggle" aria-label="Musica on/off" title="Musica on/off">
+    <!-- Barre animate (visibili quando suona) -->
+    <div class="music-bars">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <!-- Icona muto (visibile quando in pausa) -->
+    <svg class="icon-muted" viewBox="0 0 24 24">
+      <path d="M11 5L6 9H2v6h4l5 4V5z" />
+      <line x1="23" y1="9" x2="17" y2="15" />
+      <line x1="17" y1="9" x2="23" y2="15" />
+    </svg>
+  </button>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer>
+    <p class="footer-names">Carmen &amp; Marcello</p>
+    <!-- PERSONALIZZA QUI: Hashtag -->
+    <p class="footer-hashtag">#CarmenEMarcello2026</p>
+    <p><span class="it">Con amore, vi aspettiamo.</span><span class="es">Con amor, os esperamos.</span></p>
+  </footer>
+
+  <!-- ============================================
+       JAVASCRIPT
+       ============================================ -->
+  <script>
+    // ---- Musica di sottofondo ----
+    (function() {
+      var audio = document.getElementById('bgMusic');
+      var btn = document.getElementById('musicToggle');
+      var isPlaying = false;
+
+      function startMusic() {
+        audio.volume = 0.4;
+        audio.play().then(function() {
+          isPlaying = true;
+          btn.classList.add('playing');
+          btn.classList.add('visible');
+        }).catch(function() {
+          // Browser ha bloccato, mostra bottone muto
+          btn.classList.add('visible');
+        });
+      }
+
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (isPlaying) {
+          audio.pause();
+          isPlaying = false;
+          btn.classList.remove('playing');
+        } else {
+          audio.play().then(function() {
+            isPlaying = true;
+            btn.classList.add('playing');
+          });
+        }
+      });
+
+      // Esponi startMusic per la busta
+      window._startMusic = startMusic;
+    })();
+
+    // ---- Animazione busta ----
+    (function() {
+      var overlay = document.getElementById('envelopeOverlay');
+      var opened = false;
+      overlay.addEventListener('click', function() {
+        if (opened) return;
+        opened = true;
+        // Avvia la musica al click (conta come user interaction)
+        if (window._startMusic) window._startMusic();
+        // Step 1: Apri la patta + dissolvi sigillo
+        overlay.classList.add('open');
+        // Step 2: Dopo che la lettera è salita, sfuma l'overlay
+        setTimeout(function() {
+          overlay.classList.add('hiding');
+          // Step 3: Rimuovi dal DOM
+          setTimeout(function() {
+            overlay.style.display = 'none';
+          }, 1000);
+        }, 2800);
+      });
+    })();
+
+    // ---- Language Switcher ----
+    (function() {
+      var langSwitch = document.getElementById('langSwitch');
+      var buttons = langSwitch.querySelectorAll('button');
+      buttons.forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var lang = btn.getAttribute('data-lang');
+          document.body.setAttribute('data-lang', lang);
+          buttons.forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+        });
+      });
+    })();
+
+    // ---- Fade-in allo scroll ----
+    (function() {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      document.querySelectorAll('.fade-in').forEach(function(el) {
+        observer.observe(el);
+      });
+    })();
+
+    // ---- Navbar scroll + active link ----
+    (function() {
+      var nav = document.getElementById('navbar');
+      var links = nav.querySelectorAll('a');
+      var sections = document.querySelectorAll('section, .hero');
+
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+          nav.classList.add('scrolled');
+        } else {
+          nav.classList.remove('scrolled');
+        }
+
+        var scrollPos = window.scrollY + 100;
+        sections.forEach(function(section) {
+          var top = section.offsetTop;
+          var height = section.offsetHeight;
+          var id = section.getAttribute('id');
+          if (scrollPos >= top && scrollPos < top + height) {
+            links.forEach(function(link) {
+              link.classList.remove('active');
+              if (link.getAttribute('href') === '#' + id) {
+                link.classList.add('active');
+              }
+            });
+          }
+        });
+      });
+    })();
+
+    // ---- RSVP Form Handler ----
+    // ---- Copia IBAN ----
+    function copyIban() {
+      var iban = document.getElementById('ibanValue').textContent.replace(/\s/g, '');
+      var btn = document.getElementById('copyIbanBtn');
+      var lang = document.body.getAttribute('data-lang') || 'it';
+      var copiedText = lang === 'es' ? 'Copiado!' : 'Copiato!';
+      var copyText = lang === 'es'
+        ? '<span class="es">Copiar IBAN</span>'
+        : '<span class="it">Copia IBAN</span>';
+      navigator.clipboard.writeText(iban).then(function() {
+        btn.classList.add('copied');
+        btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> ' + copiedText;
+        setTimeout(function() {
+          btn.classList.remove('copied');
+          btn.innerHTML = '<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> <span class="it">Copia IBAN</span><span class="es">Copiar IBAN</span>';
+        }, 2500);
+      });
+    }
+
+    function handleRsvp(e) {
+      e.preventDefault();
+      var form = document.getElementById('rsvpForm');
+      var confirmation = document.getElementById('rsvpConfirmation');
+      form.style.display = 'none';
+      confirmation.classList.add('show');
+      confirmation.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return false;
+    }
+  </script>
+
+</body>
+</html>
