@@ -212,11 +212,12 @@
       text-align: center;
       padding: 6rem 1.5rem 4rem;
       position: relative;
-      background: var(--color-ivory);
+      /* Nessuno sfondo — la basilica è l'unico sfondo */
+      background: none;
       overflow: hidden;
     }
 
-    /* Immagine della Basilica — inizia al 100%, sempre visibile */
+    /* Immagine della Basilica — 100% visibile, nessuna opacità */
     .hero::before {
       content: '';
       position: absolute;
@@ -226,9 +227,9 @@
       height: 100%;
       background: url('basilica.jpg') center 65% / cover no-repeat;
       z-index: 0;
+      /* Nessun filtro, piena visibilità */
     }
 
-    /* Su desktop la foto è landscape, centra sulla basilica */
     @media (min-width: 768px) {
       .hero::before {
         background-position: center 55%;
