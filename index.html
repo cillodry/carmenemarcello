@@ -1122,6 +1122,132 @@
     }
 
     /* ============================================
+       COUNTDOWN
+       ============================================ */
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: clamp(1rem, 4vw, 2rem);
+      margin-top: 2rem;
+      animation: fadeIn 1s ease 1.4s both;
+    }
+
+    .countdown-item {
+      text-align: center;
+    }
+
+    .countdown-number {
+      display: block;
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 6vw, 3rem);
+      color: var(--color-text);
+      line-height: 1;
+    }
+
+    .countdown-label {
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-text-light);
+      margin-top: 0.3rem;
+    }
+
+    .countdown-separator {
+      font-family: var(--font-serif);
+      font-size: clamp(1.2rem, 4vw, 2rem);
+      color: var(--color-blush);
+      align-self: flex-start;
+      margin-top: 0.3rem;
+      opacity: 0.5;
+    }
+
+    /* ============================================
+       GALLERIA FOTO (La Nostra Storia)
+       ============================================ */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 600px) {
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1.2rem;
+      }
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      background: var(--color-sand);
+      box-shadow: 0 4px 15px rgba(74, 64, 57, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(74, 64, 57, 0.12);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Placeholder per le foto (da sostituire con immagini reali) */
+    .gallery-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--color-sand) 0%, var(--color-ivory) 100%);
+      color: var(--color-text-light);
+      font-size: 0.75rem;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .gallery-placeholder svg {
+      width: 32px;
+      height: 32px;
+      stroke: var(--color-blush);
+      fill: none;
+      stroke-width: 1.2;
+      margin-bottom: 0.5rem;
+      opacity: 0.5;
+    }
+
+    .gallery-placeholder span {
+      opacity: 0.6;
+      font-style: italic;
+    }
+
+    /* Prima foto grande (span 2 colonne) */
+    .gallery-item.featured {
+      grid-column: span 2;
+      aspect-ratio: 2/1;
+    }
+
+    .gallery-caption {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--color-text-light);
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    /* ============================================
        LANGUAGE SWITCHER
        ============================================ */
     body[data-lang="it"] .es { display: none !important; }
@@ -1292,7 +1418,7 @@
   <nav id="navbar">
     <div class="nav-inner">
       <a href="#hero">Home</a>
-      <a href="#chi-siamo"><span class="it">Chi Siamo</span><span class="es">Nosotros</span></a>
+      <a href="#la-nostra-storia"><span class="it">La Nostra Storia</span><span class="es">Nuestra Historia</span></a>
       <a href="#dettagli"><span class="it">Dettagli</span><span class="es">Detalles</span></a>
       <a href="#info">Info</a>
       <a href="#lista-nozze"><span class="it">Regalo</span><span class="es">Regalo</span></a>
@@ -1347,6 +1473,29 @@
         <span class="it">"In te ho trovato il luogo in cui il mio cuore<br>ha sempre voluto abitare."</span>
         <span class="es">"En ti encontré el lugar donde mi corazón<br>siempre quiso vivir."</span>
       </p>
+
+      <!-- Countdown -->
+      <div class="countdown" id="countdown">
+        <div class="countdown-item">
+          <span class="countdown-number" id="cd-days">---</span>
+          <span class="countdown-label"><span class="it">Giorni</span><span class="es">Días</span></span>
+        </div>
+        <div class="countdown-separator">:</div>
+        <div class="countdown-item">
+          <span class="countdown-number" id="cd-hours">--</span>
+          <span class="countdown-label"><span class="it">Ore</span><span class="es">Horas</span></span>
+        </div>
+        <div class="countdown-separator">:</div>
+        <div class="countdown-item">
+          <span class="countdown-number" id="cd-mins">--</span>
+          <span class="countdown-label"><span class="it">Minuti</span><span class="es">Minutos</span></span>
+        </div>
+        <div class="countdown-separator">:</div>
+        <div class="countdown-item">
+          <span class="countdown-number" id="cd-secs">--</span>
+          <span class="countdown-label"><span class="it">Secondi</span><span class="es">Segundos</span></span>
+        </div>
+      </div>
     </div>
 
     <div class="hero-scroll">
@@ -1357,57 +1506,83 @@
   </section>
 
   <!-- ============================================
-       CHI SIAMO
-       PERSONALIZZA: Testo sulla coppia
+       LA NOSTRA STORIA (Galleria foto)
+       Per aggiungere foto: metti i file nella cartella
+       e sostituisci i placeholder con <img src="nomefoto.jpg" alt="...">
        ============================================ -->
-  <section id="chi-siamo">
+  <section id="la-nostra-storia">
     <div class="section-inner fade-in">
       <div class="section-divider"></div>
-      <h2 class="section-title"><span class="it">Chi Siamo</span><span class="es">Quiénes Somos</span></h2>
-      <p class="section-subtitle"><span class="it">La nostra storia</span><span class="es">Nuestra historia</span></p>
+      <h2 class="section-title"><span class="it">La Nostra Storia</span><span class="es">Nuestra Historia</span></h2>
+      <p class="section-subtitle"><span class="it">Alcuni dei nostri momenti più belli</span><span class="es">Algunos de nuestros momentos más bonitos</span></p>
 
-      <div class="about-text">
-        <!-- PERSONALIZZA QUI: La vostra storia -->
-        <span class="it">
-          <p>
-            Ci siamo incontrati in un giorno qualunque che è diventato il giorno più importante
-            delle nostre vite. Da allora, ogni momento insieme è stato un piccolo miracolo fatto
-            di risate, sogni condivisi e tazze di caffè la mattina.
-          </p>
-          <p>
-            Dopo <strong>X anni</strong> di avventure insieme, abbiamo deciso di promettere
-            davanti alle persone che amiamo di più ciò che i nostri cuori sanno già da tempo.
-          </p>
-          <p class="about-highlight">
-            E saremmo felicissimi di avervi al nostro fianco in questo giorno speciale.
-          </p>
-        </span>
-        <span class="es">
-          <p>
-            Nos conocimos en un día cualquiera que se convirtió en el día más importante
-            de nuestras vidas. Desde entonces, cada momento juntos ha sido un pequeño milagro
-            hecho de risas, sueños compartidos y tazas de café por la mañana.
-          </p>
-          <p>
-            Después de <strong>X años</strong> de aventuras juntos, hemos decidido prometer
-            ante las personas que más queremos lo que nuestros corazones ya saben desde hace tiempo.
-          </p>
-          <p class="about-highlight">
-            Y estaríamos felices de teneros a nuestro lado en este día tan especial.
-          </p>
-        </span>
+      <div class="gallery-grid">
+        <!-- FOTO 1 — Grande (span 2 colonne) -->
+        <!-- Sostituisci il div.gallery-placeholder con: <img src="foto1.jpg" alt="Carmen e Marcello"> -->
+        <div class="gallery-item featured">
+          <div class="gallery-placeholder">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <span>Foto 1</span>
+          </div>
+        </div>
+
+        <!-- FOTO 2 -->
+        <div class="gallery-item">
+          <div class="gallery-placeholder">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <span>Foto 2</span>
+          </div>
+        </div>
+
+        <!-- FOTO 3 -->
+        <div class="gallery-item">
+          <div class="gallery-placeholder">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <span>Foto 3</span>
+          </div>
+        </div>
+
+        <!-- FOTO 4 -->
+        <div class="gallery-item">
+          <div class="gallery-placeholder">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <span>Foto 4</span>
+          </div>
+        </div>
+
+        <!-- FOTO 5 -->
+        <div class="gallery-item">
+          <div class="gallery-placeholder">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <span>Foto 5</span>
+          </div>
+        </div>
+
+        <!-- FOTO 6 -->
+        <div class="gallery-item">
+          <div class="gallery-placeholder">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <span>Foto 6</span>
+          </div>
+        </div>
       </div>
 
-      <div class="floral-divider">
-        <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
-          <g fill="none" stroke="#9CAF88" stroke-width="0.8">
-            <path d="M5 15 Q20 5 30 15 Q40 5 55 15" />
-            <path d="M15 15 Q20 10 25 15" />
-            <path d="M35 15 Q40 10 45 15" />
-            <circle cx="30" cy="15" r="2" fill="#D4B5A0" stroke="none" opacity="0.5" />
-          </g>
-        </svg>
-      </div>
+      <p class="gallery-caption">
+        <span class="it">Il meglio deve ancora venire...</span>
+        <span class="es">Lo mejor está por llegar...</span>
+      </p>
     </div>
   </section>
 
@@ -1611,7 +1786,7 @@
 
         <div class="iban-label"><span class="it">Intestatario</span><span class="es">Titular</span></div>
         <!-- PERSONALIZZA QUI: Nome intestatario conto -->
-        <p class="iban-intestatario"><strong>Carmen Cognome &amp; Marcello Secca D'Aragona</strong></p>
+        <p class="iban-intestatario"><strong>Carmen Belardo &amp; Marcello Secca D'Aragona</strong></p>
 
         <div class="iban-label">IBAN</div>
         <!-- PERSONALIZZA QUI: Il vostro IBAN -->
@@ -1783,6 +1958,32 @@
           }, 1000);
         }, 2800);
       });
+    })();
+
+    // ---- Countdown al 3 Ottobre 2026 ore 16:30 ----
+    (function() {
+      var wedding = new Date('2026-10-03T16:30:00').getTime();
+      function update() {
+        var now = Date.now();
+        var diff = wedding - now;
+        if (diff <= 0) {
+          document.getElementById('cd-days').textContent = '0';
+          document.getElementById('cd-hours').textContent = '0';
+          document.getElementById('cd-mins').textContent = '0';
+          document.getElementById('cd-secs').textContent = '0';
+          return;
+        }
+        var d = Math.floor(diff / 86400000);
+        var h = Math.floor((diff % 86400000) / 3600000);
+        var m = Math.floor((diff % 3600000) / 60000);
+        var s = Math.floor((diff % 60000) / 1000);
+        document.getElementById('cd-days').textContent = d;
+        document.getElementById('cd-hours').textContent = h < 10 ? '0' + h : h;
+        document.getElementById('cd-mins').textContent = m < 10 ? '0' + m : m;
+        document.getElementById('cd-secs').textContent = s < 10 ? '0' + s : s;
+      }
+      update();
+      setInterval(update, 1000);
     })();
 
     // ---- Language Switcher ----
