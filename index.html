@@ -237,7 +237,7 @@
       }
     }
 
-    /* Overlay semitrasparente che appare con i nomi */
+    /* Overlay semitrasparente — nascosto, attivato via JS */
     .hero-overlay {
       position: absolute;
       top: 0;
@@ -253,14 +253,24 @@
       );
       z-index: 1;
       opacity: 0;
-      animation: fadeIn 1.5s ease 2s forwards;
+      transition: opacity 1.5s ease;
+    }
+
+    .hero-overlay.reveal {
+      opacity: 1;
     }
 
     .hero-content {
       position: relative;
       z-index: 2;
       opacity: 0;
-      animation: fadeInUp 1.5s ease 2.5s forwards;
+      transition: opacity 1.5s ease, transform 1.5s ease;
+      transform: translateY(30px);
+    }
+
+    .hero-content.reveal {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .hero-floral {
@@ -268,7 +278,11 @@
       position: relative;
       z-index: 2;
       opacity: 0;
-      animation: fadeIn 1.5s ease 2.5s forwards;
+      transition: opacity 1.5s ease;
+    }
+
+    .hero-floral.reveal {
+      opacity: 1;
     }
 
     .hero-floral svg {
@@ -338,7 +352,11 @@
       transform: translateX(-50%);
       z-index: 2;
       opacity: 0;
-      animation: fadeIn 1s ease 4s forwards;
+      transition: opacity 1s ease;
+    }
+
+    .hero-scroll.reveal {
+      opacity: 1;
     }
 
     .hero-scroll svg {
@@ -1738,18 +1756,36 @@
     (function() {
       var overlay = document.getElementById('envelopeOverlay');
       var opened = false;
+
+      function revealHero() {
+        // Step 1: Dopo 2s mostra overlay sulla basilica
+        setTimeout(function() {
+          document.querySelector('.hero-overlay').classList.add('reveal');
+          document.querySelector('.hero-floral').classList.add('reveal');
+        }, 2000);
+        // Step 2: Dopo 2.5s mostra nomi/countdown
+        setTimeout(function() {
+          document.querySelector('.hero-content').classList.add('reveal');
+        }, 2500);
+        // Step 3: Dopo 4s mostra freccia scroll
+        setTimeout(function() {
+          document.querySelector('.hero-scroll').classList.add('reveal');
+        }, 4000);
+      }
+
       overlay.addEventListener('click', function() {
         if (opened) return;
         opened = true;
-        // Avvia la musica al click
         if (window._startMusic) window._startMusic();
-        // Step 1: Mostra busta aperta
+        // Mostra busta aperta
         overlay.classList.add('open');
-        // Step 2: Sfuma l'overlay
+        // Sfuma e rimuovi overlay
         setTimeout(function() {
           overlay.classList.add('hiding');
           setTimeout(function() {
             overlay.style.display = 'none';
+            // Ora parti con l'animazione dell'hero
+            revealHero();
           }, 1000);
         }, 1500);
       });
