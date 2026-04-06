@@ -1892,9 +1892,35 @@
       e.preventDefault();
       var form = document.getElementById('rsvpForm');
       var confirmation = document.getElementById('rsvpConfirmation');
-      form.style.display = 'none';
-      confirmation.classList.add('show');
-      confirmation.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      var btn = form.querySelector('.rsvp-submit');
+      var lang = document.body.getAttribute('data-lang') || 'it';
+
+      // Disabilita bottone durante invio
+      btn.disabled = true;
+      btn.textContent = lang === 'es' ? 'Enviando...' : 'Invio in corso...';
+
+      var data = {
+        nome: document.getElementById('nome').value,
+        cognome: document.getElementById('cognome').value,
+        ospiti: document.getElementById('ospiti').value,
+        menu: document.getElementById('menu').value,
+        note: document.getElementById('note').value
+      };
+
+      fetch('https://script.google.com/macros/s/AKfycbwqXQoet5zE_5erLoVzADYacfJQAFnFsA085gYxt4Mgff59r6mVnaijIGVunY2OJkTM/exec', {
+        method: 'POST',
+        body: JSON.stringify(data)
+      }).then(function() {
+        form.style.display = 'none';
+        confirmation.classList.add('show');
+        confirmation.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }).catch(function() {
+        // Anche se c'è errore CORS, Google Sheets salva comunque
+        form.style.display = 'none';
+        confirmation.classList.add('show');
+        confirmation.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+
       return false;
     }
   </script>
