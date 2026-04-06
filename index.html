@@ -1164,7 +1164,7 @@
         position: fixed;
         right: 1.2rem;
         top: 1.2rem;
-        z-index: 1001;
+        z-index: 1002;
       }
 
       .nav-inner {
@@ -1181,17 +1181,24 @@
         display: block;
         width: 100%;
         text-align: center;
-        padding: 0.6rem 0;
-        font-size: 0.85rem;
+        padding: 0.8rem 0;
+        font-size: 0.9rem;
       }
 
       .nav-inner.open {
         flex-direction: column;
         align-items: center;
-        padding-bottom: 1rem;
-        background: rgba(250, 248, 245, 0.95);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 4rem 2rem 2rem;
+        justify-content: center;
+        gap: 0.3rem;
+        background: rgba(250, 248, 245, 0.97);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
       }
 
       .lang-switch {
