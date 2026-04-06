@@ -1103,23 +1103,28 @@
     body[data-lang="es"] .it { display: none !important; }
 
     .lang-switch {
+      position: fixed;
+      top: 0.9rem;
+      left: 1rem;
+      z-index: 1001;
       display: flex;
       align-items: center;
       gap: 0;
-      margin-left: 0.5rem;
-      background: rgba(232, 221, 211, 0.4);
+      background: rgba(250, 248, 245, 0.7);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       border-radius: 20px;
       padding: 2px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
     }
 
     .lang-switch button {
       border: none;
       background: none;
-      padding: 0.25rem 0.6rem;
+      padding: 0.25rem 0.55rem;
       border-radius: 18px;
       font-family: var(--font-sans);
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       cursor: pointer;
@@ -1201,14 +1206,6 @@
         -webkit-backdrop-filter: blur(12px);
       }
 
-      .lang-switch {
-        display: none;
-        margin: 0.5rem 0 0;
-      }
-
-      .nav-inner.open .lang-switch {
-        display: flex;
-      }
     }
 
     /* ============================================
@@ -1244,16 +1241,18 @@
       <a href="#info">Info</a>
       <a href="#lista-nozze"><span class="it">Regalo</span><span class="es">Regalo</span></a>
       <a href="#rsvp">RSVP</a>
-      <div class="lang-switch" id="langSwitch">
-        <button class="active" data-lang="it">IT</button>
-        <button data-lang="es">ES</button>
-      </div>
       <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
         <svg class="icon-open" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         <svg class="icon-close" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
   </nav>
+
+  <!-- Language switcher — fisso in alto a sinistra -->
+  <div class="lang-switch" id="langSwitch">
+    <button class="active" data-lang="it">IT</button>
+    <button data-lang="es">ES</button>
+  </div>
 
   <!-- ============================================
        HERO
@@ -1797,28 +1796,33 @@
       setInterval(update, 1000);
     })();
 
-    // ---- Language Switcher ----
+    // ---- Language Switcher + auto-detect ----
     (function() {
       var langSwitch = document.getElementById('langSwitch');
       var buttons = langSwitch.querySelectorAll('button');
 
       function setLang(lang) {
         document.body.setAttribute('data-lang', lang);
-        // Aggiorna le option dei select
         document.querySelectorAll('select[data-i18n="select"] option').forEach(function(opt) {
           var text = opt.getAttribute('data-' + lang);
           if (text) opt.textContent = text;
         });
+        buttons.forEach(function(b) {
+          b.classList.toggle('active', b.getAttribute('data-lang') === lang);
+        });
+      }
+
+      // Auto-detect: se il browser è in spagnolo, apri in ES
+      var browserLang = (navigator.language || navigator.userLanguage || 'it').toLowerCase();
+      if (browserLang.startsWith('es')) {
+        setLang('es');
       }
 
       buttons.forEach(function(btn) {
         btn.addEventListener('click', function(e) {
           e.preventDefault();
           e.stopPropagation();
-          var lang = btn.getAttribute('data-lang');
-          setLang(lang);
-          buttons.forEach(function(b) { b.classList.remove('active'); });
-          btn.classList.add('active');
+          setLang(btn.getAttribute('data-lang'));
         });
       });
     })();
