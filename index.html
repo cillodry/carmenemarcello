@@ -168,7 +168,12 @@
       transition: background 0.3s ease, box-shadow 0.3s ease, border-bottom 0.3s ease;
     }
 
-    nav.scrolled {
+    @media (min-width: 641px) {
+      nav.scrolled {
+        background: rgba(250, 248, 245, 0.92);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
     }
 
     .nav-inner {
@@ -1141,8 +1146,8 @@
     }
 
     .hamburger svg {
-      width: 22px;
-      height: 22px;
+      width: 28px;
+      height: 28px;
       stroke: var(--color-text);
       fill: none;
       stroke-width: 2;
@@ -1156,10 +1161,10 @@
     @media (max-width: 640px) {
       .hamburger {
         display: block;
-        position: absolute;
-        right: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
+        position: fixed;
+        right: 1.2rem;
+        top: 1.2rem;
+        z-index: 1001;
       }
 
       .nav-inner {
