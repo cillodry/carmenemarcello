@@ -35,7 +35,7 @@
 
     html {
       scroll-behavior: smooth;
-      font-size: 16px;
+      font-size: 18px;
     }
 
     body {
@@ -44,6 +44,7 @@
       background-color: var(--color-ivory);
       line-height: 1.7;
       overflow-x: hidden;
+      font-weight: 400;
     }
 
     /* ============================================
@@ -293,19 +294,20 @@
 
     .hero h1 {
       font-family: var(--font-serif);
-      font-weight: 300;
+      font-weight: 400;
       font-style: italic;
-      font-size: clamp(1.8rem, 6vw, 3.2rem);
+      font-size: clamp(2.2rem, 7vw, 3.8rem);
       color: var(--color-text);
       letter-spacing: 0.04em;
       line-height: 1.3;
       margin-bottom: 0.3rem;
+      text-shadow: 0 1px 12px rgba(250, 248, 245, 0.8);
     }
 
     .hero h1 .amp {
       display: inline;
       font-size: 0.7em;
-      color: var(--color-sage);
+      color: var(--color-sage-dark);
       margin: 0 0.2em;
       font-style: italic;
     }
@@ -322,8 +324,9 @@
       font-size: 1.1rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--color-text-light);
+      color: var(--color-text);
       margin-bottom: 0.5rem;
+      text-shadow: 0 1px 10px rgba(250, 248, 245, 0.8);
       animation: fadeIn 1s ease 0.8s both;
     }
 
@@ -1743,19 +1746,19 @@
       var opened = false;
 
       function revealHero() {
-        // Step 1: Dopo 1s mostra overlay sulla basilica
+        // Step 1: Dopo 0.5s mostra overlay sulla basilica
         setTimeout(function() {
           document.querySelector('.hero-overlay').classList.add('reveal');
           document.querySelector('.hero-floral').classList.add('reveal');
-        }, 1000);
-        // Step 2: Dopo 1.5s mostra nomi/countdown
+        }, 500);
+        // Step 2: Dopo 1s mostra nomi/countdown
         setTimeout(function() {
           document.querySelector('.hero-content').classList.add('reveal');
-        }, 1500);
-        // Step 3: Dopo 2.5s mostra freccia scroll
+        }, 1000);
+        // Step 3: Dopo 2s mostra freccia scroll
         setTimeout(function() {
           document.querySelector('.hero-scroll').classList.add('reveal');
-        }, 2500);
+        }, 2000);
       }
 
       var step1 = overlay.querySelector('.step1');
