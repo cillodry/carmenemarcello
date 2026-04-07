@@ -1625,9 +1625,16 @@
 
         <div class="form-row double">
           <div class="form-group">
-            <label for="ospiti"><span class="it">Numero Ospiti *</span><span class="es">Número de Invitados *</span></label>
+            <label for="ospiti"><span class="it">Adulti *</span><span class="es">Adultos *</span></label>
             <input type="number" id="ospiti" name="ospiti" min="1" max="10" value="1" required>
           </div>
+          <div class="form-group">
+            <label for="bambini"><span class="it">Bambini</span><span class="es">Niños</span></label>
+            <input type="number" id="bambini" name="bambini" min="0" max="10" value="0">
+          </div>
+        </div>
+
+        <div class="form-row double">
           <div class="form-group">
             <label for="menu"><span class="it">Preferenza Menu *</span><span class="es">Preferencia Menú *</span></label>
             <select id="menu" name="menu" required data-i18n="select">
@@ -1954,6 +1961,7 @@
         nome: document.getElementById('nome').value,
         cognome: document.getElementById('cognome').value,
         ospiti: document.getElementById('ospiti').value,
+        bambini: document.getElementById('bambini').value,
         menu: document.getElementById('menu').value,
         note: document.getElementById('note').value
       };
