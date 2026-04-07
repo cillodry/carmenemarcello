@@ -100,7 +100,6 @@
       pointer-events: none;
     }
 
-    /* L'immagine riempie TUTTO lo schermo, centrata sul sigillo */
     .envelope-img {
       position: absolute;
       top: 0;
@@ -109,20 +108,17 @@
       height: 100%;
       object-fit: cover;
       object-position: center center;
-      transition: opacity 0.6s ease;
-    }
-
-    .envelope-img.closed {
-      z-index: 2;
-    }
-
-    .envelope-img.opened {
-      z-index: 1;
-    }
-
-    .envelope-overlay.open .envelope-img.closed {
       opacity: 0;
+      transition: opacity 0.8s ease;
     }
+
+    .envelope-img.active {
+      opacity: 1;
+    }
+
+    .envelope-img.step1 { z-index: 3; }
+    .envelope-img.step2 { z-index: 2; }
+    .envelope-img.step3 { z-index: 1; }
 
     .envelope-hint {
       position: absolute;
@@ -1228,8 +1224,9 @@
        Cliccando si apre la busta e si rivela il sito
        ============================================ -->
   <div class="envelope-overlay" id="envelopeOverlay">
-    <img class="envelope-img closed" src="busta-chiusa.jpg" alt="Invito">
-    <img class="envelope-img opened" src="busta-aperta.jpg" alt="Invito aperto">
+    <img class="envelope-img step1 active" src="busta-chiusa.jpg" alt="Invito chiuso">
+    <img class="envelope-img step2" src="busta-semi.jpg" alt="Invito semi-aperto">
+    <img class="envelope-img step3" src="busta-aperta.jpg" alt="Invito aperto">
     <div class="envelope-hint"><span class="it">Tocca per aprire l'invito</span><span class="es">Toca para abrir la invitación</span></div>
   </div>
 
@@ -1761,21 +1758,35 @@
         }, 2500);
       }
 
+      var step1 = overlay.querySelector('.step1');
+      var step2 = overlay.querySelector('.step2');
+      var step3 = overlay.querySelector('.step3');
+
       overlay.addEventListener('click', function() {
         if (opened) return;
         opened = true;
         if (window._startMusic) window._startMusic();
-        // Mostra busta aperta
-        overlay.classList.add('open');
-        // Sfuma e rimuovi overlay
+
+        // Step 1 → Step 2: semi-aperta (dopo 0.3s)
+        setTimeout(function() {
+          step1.classList.remove('active');
+          step2.classList.add('active');
+        }, 300);
+
+        // Step 2 → Step 3: aperta (dopo 1.2s)
+        setTimeout(function() {
+          step2.classList.remove('active');
+          step3.classList.add('active');
+        }, 1200);
+
+        // Sfuma tutto e rivela il sito (dopo 2.5s)
         setTimeout(function() {
           overlay.classList.add('hiding');
           setTimeout(function() {
             overlay.style.display = 'none';
-            // Ora parti con l'animazione dell'hero
             revealHero();
           }, 1000);
-        }, 1500);
+        }, 2500);
       });
     })();
 
