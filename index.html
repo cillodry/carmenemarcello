@@ -103,7 +103,7 @@
       pointer-events: none;
     }
 
-    .envelope-img {
+    .envelope-video {
       position: absolute;
       top: 0;
       left: 0;
@@ -111,17 +111,25 @@
       height: 100%;
       object-fit: cover;
       object-position: center center;
+    }
+
+    /* Poster (primo frame) visibile prima del play */
+    .envelope-poster {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      z-index: 2;
+      transition: opacity 0.5s ease;
+    }
+
+    .envelope-poster.hidden {
       opacity: 0;
-      transition: opacity 0.8s ease;
+      pointer-events: none;
     }
-
-    .envelope-img.active {
-      opacity: 1;
-    }
-
-    .envelope-img.step1 { z-index: 3; }
-    .envelope-img.step2 { z-index: 2; }
-    .envelope-img.step3 { z-index: 1; }
 
     .envelope-hint {
       position: absolute;
@@ -1241,9 +1249,10 @@
        Cliccando si apre la busta e si rivela il sito
        ============================================ -->
   <div class="envelope-overlay" id="envelopeOverlay">
-    <img class="envelope-img step1 active" src="busta-chiusa.jpg" alt="Invito chiuso">
-    <img class="envelope-img step2" src="busta-semi.jpg" alt="Invito semi-aperto">
-    <img class="envelope-img step3" src="busta-aperta.jpg" alt="Invito aperto">
+    <img class="envelope-poster" src="busta-chiusa.jpg" alt="Invito">
+    <video class="envelope-video" id="envelopeVideo" muted playsinline preload="auto">
+      <source src="busta-video.mp4" type="video/mp4">
+    </video>
     <div class="envelope-hint"><span class="it">Tocca per aprire l'invito</span><span class="es">Toca para abrir la invitación</span></div>
   </div>
 
@@ -1788,35 +1797,37 @@
         }, 2000);
       }
 
-      var step1 = overlay.querySelector('.step1');
-      var step2 = overlay.querySelector('.step2');
-      var step3 = overlay.querySelector('.step3');
+      var video = document.getElementById('envelopeVideo');
+      var poster = overlay.querySelector('.envelope-poster');
 
       overlay.addEventListener('click', function() {
         if (opened) return;
         opened = true;
         if (window._startMusic) window._startMusic();
 
-        // Step 1 → Step 2: semi-aperta (dopo 0.3s)
-        setTimeout(function() {
-          step1.classList.remove('active');
-          step2.classList.add('active');
-        }, 300);
+        // Nascondi poster, avvia video
+        poster.classList.add('hidden');
+        video.play();
 
-        // Step 2 → Step 3: aperta (dopo 1.2s)
-        setTimeout(function() {
-          step2.classList.remove('active');
-          step3.classList.add('active');
-        }, 1200);
-
-        // Sfuma tutto e rivela il sito (dopo 2.5s)
-        setTimeout(function() {
+        // Quando il video finisce, sfuma e rivela il sito
+        video.addEventListener('ended', function() {
           overlay.classList.add('hiding');
           setTimeout(function() {
             overlay.style.display = 'none';
             revealHero();
           }, 1000);
-        }, 2500);
+        });
+
+        // Fallback se il video non parte (blocco browser)
+        setTimeout(function() {
+          if (video.paused) {
+            overlay.classList.add('hiding');
+            setTimeout(function() {
+              overlay.style.display = 'none';
+              revealHero();
+            }, 1000);
+          }
+        }, 1000);
       });
     })();
 
