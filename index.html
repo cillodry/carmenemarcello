@@ -113,24 +113,6 @@
       object-position: center center;
     }
 
-    /* Poster (primo frame) visibile prima del play */
-    .envelope-poster {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center center;
-      z-index: 2;
-      transition: opacity 0.5s ease;
-    }
-
-    .envelope-poster.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
     .envelope-hint {
       position: absolute;
       bottom: 5%;
@@ -1249,9 +1231,8 @@
        Cliccando si apre la busta e si rivela il sito
        ============================================ -->
   <div class="envelope-overlay" id="envelopeOverlay">
-    <img class="envelope-poster" src="busta-chiusa.jpg" alt="Invito">
     <video class="envelope-video" id="envelopeVideo" muted playsinline preload="auto">
-      <source src="busta-video.mp4" type="video/mp4">
+      <source src="busta-video-light.mp4" type="video/mp4">
     </video>
     <div class="envelope-hint"><span class="it">Tocca per aprire l'invito</span><span class="es">Toca para abrir la invitación</span></div>
   </div>
@@ -1798,15 +1779,13 @@
       }
 
       var video = document.getElementById('envelopeVideo');
-      var poster = overlay.querySelector('.envelope-poster');
 
       overlay.addEventListener('click', function() {
         if (opened) return;
         opened = true;
         if (window._startMusic) window._startMusic();
 
-        // Nascondi poster, avvia video
-        poster.classList.add('hidden');
+        // Avvia video
         video.play();
 
         // Quando il video finisce, sfuma e rivela il sito
