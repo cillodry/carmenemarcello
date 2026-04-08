@@ -398,7 +398,7 @@
     .section-subtitle {
       text-align: center;
       color: var(--color-text-light);
-      font-size: 0.9rem;
+      font-size: 1.05rem;
       margin-bottom: 3rem;
       font-style: italic;
     }
@@ -658,7 +658,7 @@
     }
 
     .iban-label {
-      font-size: 0.7rem;
+      font-size: 0.85rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--color-text-light);
@@ -667,7 +667,8 @@
 
     .iban-value {
       font-family: 'Courier New', Courier, monospace;
-      font-size: clamp(0.78rem, 2.8vw, 0.95rem);
+      font-size: clamp(0.85rem, 3.2vw, 1.05rem);
+      white-space: nowrap;
       color: var(--color-text);
       letter-spacing: 0.06em;
       word-break: break-all;
@@ -679,7 +680,7 @@
     }
 
     .iban-intestatario {
-      font-size: 0.88rem;
+      font-size: 1rem;
       color: var(--color-text);
       margin-bottom: 1.2rem;
     }
@@ -1001,7 +1002,8 @@
 
     .countdown-label {
       display: block;
-      font-size: 0.65rem;
+      font-size: 0.7rem;
+      min-width: 3.5rem;
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--color-text-light);
@@ -1316,12 +1318,12 @@
         <div class="countdown-separator">:</div>
         <div class="countdown-item">
           <span class="countdown-number" id="cd-mins">--</span>
-          <span class="countdown-label"><span class="it">Minuti</span><span class="es">Minutos</span></span>
+          <span class="countdown-label"><span class="it">Minuti</span><span class="es">Min</span></span>
         </div>
         <div class="countdown-separator">:</div>
         <div class="countdown-item">
           <span class="countdown-number" id="cd-secs">--</span>
-          <span class="countdown-label"><span class="it">Secondi</span><span class="es">Segundos</span></span>
+          <span class="countdown-label"><span class="it">Secondi</span><span class="es">Seg</span></span>
         </div>
       </div>
     </div>
@@ -1634,7 +1636,7 @@
               <option value="intolleranze" data-it="Intolleranze / Allergie" data-es="Intolerancias / Alergias">Intolleranze / Allergie</option>
               <option value="misto" data-it="Esigenze diverse (vedi note)" data-es="Necesidades diferentes (ver notas)">Esigenze diverse (vedi note)</option>
             </select>
-            <span style="font-size:0.68rem; color:var(--color-text-light); opacity:0.7; margin-top:0.3rem; font-style:italic;">
+            <span style="font-size:0.8rem; color:var(--color-text-light); opacity:0.7; margin-top:0.3rem; font-style:italic; display:block;">
               <span class="it">Se gli ospiti hanno esigenze diverse, scegli "Esigenze diverse" e specifica nelle note.</span>
               <span class="es">Si los invitados tienen necesidades diferentes, elige "Necesidades diferentes" y especifica en las notas.</span>
             </span>
