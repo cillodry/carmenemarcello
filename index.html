@@ -251,7 +251,7 @@
       );
       z-index: 1;
       opacity: 0;
-      transition: opacity 1.5s ease;
+      transition: opacity 0.8s ease;
     }
 
     .hero-overlay.reveal {
@@ -262,8 +262,8 @@
       position: relative;
       z-index: 2;
       opacity: 0;
-      transition: opacity 1.5s ease, transform 1.5s ease;
-      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      transform: translateY(15px);
     }
 
     .hero-content.reveal {
@@ -1763,19 +1763,15 @@
       var opened = false;
 
       function revealHero() {
-        // Step 1: Dopo 0.5s mostra overlay sulla basilica
+        // Tutto appare quasi subito
         setTimeout(function() {
           document.querySelector('.hero-overlay').classList.add('reveal');
           document.querySelector('.hero-floral').classList.add('reveal');
-        }, 500);
-        // Step 2: Dopo 1s mostra nomi/countdown
-        setTimeout(function() {
           document.querySelector('.hero-content').classList.add('reveal');
-        }, 1000);
-        // Step 3: Dopo 2s mostra freccia scroll
+        }, 300);
         setTimeout(function() {
           document.querySelector('.hero-scroll').classList.add('reveal');
-        }, 2000);
+        }, 1200);
       }
 
       var video = document.getElementById('envelopeVideo');
