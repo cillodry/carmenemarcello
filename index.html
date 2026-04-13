@@ -6,10 +6,43 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <title>Carmen & Marcello — Il Nostro Matrimonio</title>
   <meta name="description" content="Carmen e Marcello si sposano il 3 ottobre 2026 a Napoli. Carmen y Marcello se casan el 3 de octubre de 2026 en Nápoles.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
   <style>
+    @font-face {
+      font-family: 'Cormorant Garamond';
+      font-style: italic;
+      font-weight: 300;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/cormorantgaramond/v21/co3smX5slCNuHLi8bLeY9MK7whWMhyjYrGFEsdtdc62E6zd5rDDOjw.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Cormorant Garamond';
+      font-style: italic;
+      font-weight: 400;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/cormorantgaramond/v21/co3smX5slCNuHLi8bLeY9MK7whWMhyjYrGFEsdtdc62E6zd58jDOjw.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Cormorant Garamond';
+      font-style: normal;
+      font-weight: 300;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/cormorantgaramond/v21/co3umX5slCNuHLi8bLeY9MK7whWMhyjypVO7abI26QOD_qE6GnM.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Cormorant Garamond';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/cormorantgaramond/v21/co3umX5slCNuHLi8bLeY9MK7whWMhyjypVO7abI26QOD_v86GnM.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Cormorant Garamond';
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/cormorantgaramond/v21/co3umX5slCNuHLi8bLeY9MK7whWMhyjypVO7abI26QOD_s06GnM.ttf) format('truetype');
+    }
 
     /* ============================================
        PERSONALIZZA QUI: COLORI E FONT
@@ -249,7 +282,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: url('basilica.jpg') center 65% / cover no-repeat;
+      background: url('basilica.webp') center 65% / cover no-repeat;
+      background: image-set(url('basilica.webp') type('image/webp'), url('basilica.jpg') type('image/jpeg')) center 65% / cover no-repeat;
       z-index: 0;
       /* Nessun filtro, piena visibilità */
     }
@@ -1257,10 +1291,10 @@
        Cliccando si apre la busta e si rivela il sito
        ============================================ -->
   <div class="envelope-overlay" id="envelopeOverlay">
-    <video class="envelope-video" id="envelopeVideo" muted playsinline preload="auto" poster="busta-chiusa.jpg">
+    <video class="envelope-video" id="envelopeVideo" muted playsinline preload="auto" poster="busta-chiusa.webp">
       <source src="busta-video-light.mp4" type="video/mp4">
     </video>
-    <img class="envelope-poster-desktop" src="busta-chiusa.jpg" alt="Invito" width="1200" height="1200">
+    <img class="envelope-poster-desktop" src="busta-chiusa.webp" alt="Invito" width="1200" height="1200">
     <div class="envelope-hint"><span class="it">Tocca per aprire l'invito</span><span class="es">Toca para abrir la invitación</span></div>
   </div>
 
@@ -1374,27 +1408,42 @@
       <div class="gallery-grid">
         <!-- Tropea — foto grande -->
         <div class="gallery-item featured">
-          <img src="tropea-sunset.jpeg" alt="Carmen e Marcello a Tropea" style="object-position: center 55%" width="1600" height="1200" loading="lazy">
+          <picture>
+            <source srcset="tropea-sunset.webp" type="image/webp">
+            <img src="tropea-sunset.jpeg" alt="Carmen e Marcello a Tropea" style="object-position: center 55%" width="1600" height="1200" loading="lazy">
+          </picture>
         </div>
 
         <!-- Granada -->
         <div class="gallery-item">
-          <img src="granada.jpg" alt="Carmen e Marcello a Granada" style="object-position: center 65%" width="900" height="1600" loading="lazy">
+          <picture>
+            <source srcset="granada.webp" type="image/webp">
+            <img src="granada.jpg" alt="Carmen e Marcello a Granada" style="object-position: center 65%" width="900" height="1600" loading="lazy">
+          </picture>
         </div>
 
         <!-- Portofino -->
         <div class="gallery-item">
-          <img src="portofino.jpg" alt="Carmen e Marcello a Portofino" width="900" height="1600" loading="lazy">
+          <picture>
+            <source srcset="portofino.webp" type="image/webp">
+            <img src="portofino.jpg" alt="Carmen e Marcello a Portofino" width="900" height="1600" loading="lazy">
+          </picture>
         </div>
 
         <!-- Gaeta -->
         <div class="gallery-item">
-          <img src="gaeta-sunset.jpg" alt="Carmen e Marcello a Gaeta" style="object-position: center 35%" width="1200" height="1600" loading="lazy">
+          <picture>
+            <source srcset="gaeta-sunset.webp" type="image/webp">
+            <img src="gaeta-sunset.jpg" alt="Carmen e Marcello a Gaeta" style="object-position: center 35%" width="1200" height="1600" loading="lazy">
+          </picture>
         </div>
 
         <!-- Thailand -->
         <div class="gallery-item">
-          <img src="thailand-white-temple.jpg" alt="Carmen e Marcello in Thailandia" style="object-position: center 55%" width="899" height="1600" loading="lazy">
+          <picture>
+            <source srcset="thailand-white-temple.webp" type="image/webp">
+            <img src="thailand-white-temple.jpg" alt="Carmen e Marcello in Thailandia" style="object-position: center 55%" width="899" height="1600" loading="lazy">
+          </picture>
         </div>
       </div>
 
