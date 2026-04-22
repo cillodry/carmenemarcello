@@ -1256,6 +1256,56 @@
         padding: 3.5rem 1.2rem;
       }
     }
+
+    /* ============================================
+       FOCUS VISIBILE (keyboard navigation)
+       ============================================ */
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible,
+    [tabindex]:focus-visible {
+      outline: 2px solid var(--color-sage-dark);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    .form-group input:focus-visible,
+    .form-group select:focus-visible,
+    .form-group textarea:focus-visible {
+      outline-offset: 0;
+      border-radius: 8px;
+    }
+
+    /* ============================================
+       REDUCED MOTION (accessibility)
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .fade-in {
+        opacity: 1;
+        transform: none;
+      }
+
+      .hero-line {
+        width: 80px;
+      }
+
+      .hero-overlay,
+      .hero-floral,
+      .hero-content,
+      .hero-scroll {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
   </style>
 </head>
 <body data-lang="it">
@@ -1264,7 +1314,7 @@
        ANIMAZIONE BUSTA D'INVITO
        Cliccando si apre la busta e si rivela il sito
        ============================================ -->
-  <div class="envelope-overlay" id="envelopeOverlay">
+  <div class="envelope-overlay" id="envelopeOverlay" role="button" tabindex="0" aria-label="Tocca per aprire l'invito">
     <video class="envelope-video" id="envelopeVideo" muted playsinline preload="auto" poster="busta-poster.webp">
       <source src="busta-video-light.mp4" type="video/mp4">
     </video>
@@ -1844,19 +1894,20 @@
       var video = document.getElementById('envelopeVideo');
 
       var isDesktop = window.innerWidth >= 768;
+      var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      overlay.addEventListener('click', function() {
+      function openEnvelope() {
         if (opened) return;
         opened = true;
         if (window._startMusic) window._startMusic();
 
-        if (isDesktop) {
-          // Desktop: sfuma subito l'immagine statica
+        if (isDesktop || reducedMotion) {
+          // Desktop o reduced-motion: sfuma subito l'immagine statica
           overlay.classList.add('hiding');
           setTimeout(function() {
             overlay.style.display = 'none';
             revealHero();
-          }, 1000);
+          }, reducedMotion ? 0 : 1000);
         } else {
           // Mobile: avvia video
           video.play();
@@ -1879,6 +1930,14 @@
               }, 1000);
             }
           }, 1000);
+        }
+      }
+
+      overlay.addEventListener('click', openEnvelope);
+      overlay.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openEnvelope();
         }
       });
     })();
@@ -1915,6 +1974,7 @@
       var buttons = langSwitch.querySelectorAll('button');
 
       function setLang(lang) {
+        document.documentElement.lang = lang;
         document.body.setAttribute('data-lang', lang);
         document.querySelectorAll('select[data-i18n="select"] option').forEach(function(opt) {
           var text = opt.getAttribute('data-' + lang);
@@ -1923,6 +1983,10 @@
         buttons.forEach(function(b) {
           b.classList.toggle('active', b.getAttribute('data-lang') === lang);
         });
+        var envelope = document.getElementById('envelopeOverlay');
+        if (envelope) {
+          envelope.setAttribute('aria-label', lang === 'es' ? 'Toca para abrir la invitación' : "Tocca per aprire l'invito");
+        }
       }
 
       // Auto-detect: se il browser è in spagnolo, apri in ES
