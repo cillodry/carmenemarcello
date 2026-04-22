@@ -2095,17 +2095,25 @@
         if (window._updateCalendarLink) window._updateCalendarLink(lang);
       }
 
-      // Auto-detect: se il browser è in spagnolo, apri in ES
-      var browserLang = (navigator.language || navigator.userLanguage || 'it').toLowerCase();
-      if (browserLang.startsWith('es')) {
-        setLang('es');
+      // Prima volta: scelta manuale salvata vince sul browser-detect
+      var savedLang = null;
+      try { savedLang = localStorage.getItem('lang'); } catch (e) {}
+      if (savedLang === 'it' || savedLang === 'es') {
+        setLang(savedLang);
+      } else {
+        var browserLang = (navigator.language || navigator.userLanguage || 'it').toLowerCase();
+        if (browserLang.startsWith('es')) {
+          setLang('es');
+        }
       }
 
       buttons.forEach(function(btn) {
         btn.addEventListener('click', function(e) {
           e.preventDefault();
           e.stopPropagation();
-          setLang(btn.getAttribute('data-lang'));
+          var lang = btn.getAttribute('data-lang');
+          setLang(lang);
+          try { localStorage.setItem('lang', lang); } catch (ex) {}
         });
       });
     })();
