@@ -95,6 +95,10 @@
     /* ============================================
        ENVELOPE OVERLAY (image-based)
        ============================================ */
+    body.envelope-locked {
+      overflow: hidden;
+    }
+
     .envelope-overlay {
       position: fixed;
       top: 0;
@@ -1966,6 +1970,19 @@
       var overlay = document.getElementById('envelopeOverlay');
       var opened = false;
 
+      // Blocca scroll e focus sul resto della pagina finché la busta è chiusa
+      var backgroundSiblings = Array.from(document.body.children).filter(function(el) {
+        return el !== overlay;
+      });
+      backgroundSiblings.forEach(function(el) { el.inert = true; });
+      document.body.classList.add('envelope-locked');
+      overlay.focus();
+
+      function unlockBackground() {
+        backgroundSiblings.forEach(function(el) { el.inert = false; });
+        document.body.classList.remove('envelope-locked');
+      }
+
       function revealHero() {
         // Tutto appare quasi subito
         setTimeout(function() {
@@ -1986,6 +2003,7 @@
       function openEnvelope() {
         if (opened) return;
         opened = true;
+        unlockBackground();
         if (window._startMusic) window._startMusic();
 
         if (isDesktop || reducedMotion) {
