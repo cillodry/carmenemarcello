@@ -2271,23 +2271,26 @@
       var btn = document.getElementById('shareSiteBtn');
       if (!btn) return;
       var label = btn.querySelector('.share-label');
+      var isTouchDevice = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
 
       btn.addEventListener('click', function() {
         var lang = document.body.getAttribute('data-lang') || 'it';
+        var url = 'https://carmenemarcello.com/';
         var shareData = {
           title: 'Carmen & Marcello — 3 Ottobre 2026',
           text: lang === 'es'
             ? '¡Nos casamos! Os esperamos en nuestra boda en Nápoles el 3 de octubre 2026'
             : 'Ci sposiamo! Vi aspettiamo al nostro matrimonio a Napoli il 3 ottobre 2026',
-          url: 'https://carmenemarcello.com/'
+          url: url
         };
 
-        if (navigator.share) {
+        // Solo mobile: share sheet nativo. Desktop: clipboard pulito.
+        if (isTouchDevice && navigator.share) {
           navigator.share(shareData).catch(function() {});
           return;
         }
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(shareData.url).then(function() {
+          navigator.clipboard.writeText(url).then(function() {
             var originalHTML = label.innerHTML;
             btn.classList.add('copied');
             label.textContent = lang === 'es' ? 'Enlace copiado!' : 'Link copiato!';
