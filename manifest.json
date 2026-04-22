@@ -1,0 +1,24 @@
+{
+  "name": "Carmen & Marcello — Il Nostro Matrimonio",
+  "short_name": "Carmen & Marcello",
+  "description": "Carmen e Marcello si sposano il 3 ottobre 2026 a Napoli.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF8F5",
+  "theme_color": "#5F7A4D",
+  "lang": "it",
+  "icons": [
+    {
+      "src": "favicon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "favicon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    }
+  ]
+}
