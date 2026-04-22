@@ -746,6 +746,63 @@
     }
 
     /* ============================================
+       FAQ
+       ============================================ */
+    .faq-list {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--color-sand);
+    }
+
+    .faq-item summary {
+      padding: 1.2rem 0;
+      cursor: pointer;
+      font-family: var(--font-serif);
+      font-size: 1.12rem;
+      color: var(--color-text);
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .faq-item summary::-webkit-details-marker,
+    .faq-item summary::marker {
+      display: none;
+      content: '';
+    }
+
+    .faq-item summary:hover {
+      color: var(--color-sage-dark);
+    }
+
+    .faq-item summary::after {
+      content: '+';
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      color: var(--color-sage-dark);
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .faq-item[open] summary::after {
+      transform: rotate(45deg);
+    }
+
+    .faq-item p {
+      padding: 0 0 1.3rem;
+      color: var(--color-text-light);
+      line-height: 1.8;
+      font-size: 0.98rem;
+    }
+
+    /* ============================================
        LISTA NOZZE
        ============================================ */
     .gift-section {
@@ -1501,6 +1558,7 @@
       <a href="#la-nostra-storia"><span class="it">La Nostra Storia</span><span class="es">Nuestra Historia</span></a>
       <a href="#dettagli"><span class="it">Dettagli</span><span class="es">Detalles</span></a>
       <a href="#info">Info</a>
+      <a href="#faq">FAQ</a>
       <a href="#lista-nozze"><span class="it">Regalo</span><span class="es">Regalo</span></a>
       <a href="#rsvp">RSVP</a>
       <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
@@ -1822,6 +1880,74 @@
           </h3>
           <img src="dresscode.png" alt="Dress Code Elegante" style="width:100%; height:auto; border-radius:8px;" width="1195" height="896" loading="lazy">
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FAQ
+       ============================================ -->
+  <section id="faq">
+    <div class="section-inner fade-in">
+      <div class="section-divider"></div>
+      <h2 class="section-title"><span class="it">Domande Frequenti</span><span class="es">Preguntas Frecuentes</span></h2>
+      <p class="section-subtitle"><span class="it">Le risposte alle domande più comuni</span><span class="es">Las respuestas a las preguntas más comunes</span></p>
+
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>
+            <span class="it">Posso portare un accompagnatore?</span>
+            <span class="es">¿Puedo traer un acompañante?</span>
+          </summary>
+          <p>
+            <span class="it">Certamente! Indicatelo nel form RSVP qui sotto così possiamo organizzare al meglio i posti.</span>
+            <span class="es">¡Por supuesto! Indicadlo en el formulario RSVP a continuación para que podamos organizar bien las mesas.</span>
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span class="it">I bambini sono benvenuti?</span>
+            <span class="es">¿Los niños son bienvenidos?</span>
+          </summary>
+          <p>
+            <span class="it">Assolutamente sì. I più piccoli sono i benvenuti alla festa.</span>
+            <span class="es">Por supuesto. Los más pequeños son bienvenidos a la fiesta.</span>
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span class="it">Ci sono restrizioni sull'abbigliamento per la Basilica?</span>
+            <span class="es">¿Hay restricciones de vestimenta para la Basílica?</span>
+          </summary>
+          <p>
+            <span class="it">Le solite di una chiesa cattolica: è sufficiente evitare abiti troppo scollati o con le spalle scoperte durante la cerimonia.</span>
+            <span class="es">Las habituales de una iglesia católica: basta con evitar vestidos muy escotados o con los hombros descubiertos durante la ceremonia.</span>
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span class="it">E se piove?</span>
+            <span class="es">¿Y si llueve?</span>
+          </summary>
+          <p>
+            <span class="it">Nessun problema: la festa sarà al coperto, tutto è organizzato per essere sereno sotto qualsiasi cielo.</span>
+            <span class="es">Ningún problema: la fiesta será bajo techo, todo está organizado para disfrutar bajo cualquier cielo.</span>
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span class="it">Posso fare foto durante la cerimonia?</span>
+            <span class="es">¿Puedo hacer fotos durante la ceremonia?</span>
+          </summary>
+          <p>
+            <span class="it">Certamente! Qualche settimana prima del matrimonio vi condivideremo un modo simpatico per raccogliere tutte le vostre foto — stiamo pensando a un'app stile "fotocamera usa e getta".</span>
+            <span class="es">¡Por supuesto! Unas semanas antes de la boda os compartiremos una forma divertida para recopilar todas vuestras fotos — estamos pensando en una app tipo "cámara desechable".</span>
+          </p>
+        </details>
       </div>
     </div>
   </section>
