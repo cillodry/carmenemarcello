@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CarmenEMarcello//Wedding//ES
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:wedding-carmen-marcello-2026@carmenemarcello.com
+DTSTAMP:20260422T000000Z
+DTSTART:20261003T143000Z
+DTEND:20261003T230000Z
+SUMMARY:Boda Carmen & Marcello
+LOCATION:Basílica dell'Incoronata Madre del Buon Consiglio\, Via Capodimonte 13\, 80136 Nápoles
+DESCRIPTION:Ceremonia a las 16:30 en la Basílica dell'Incoronata\, luego recepción en Tenuta Torelli (Via Capodimonte 27/27A) desde las 18:00.
+URL:https://carmenemarcello.com/
+END:VEVENT
+END:VCALENDAR

@@ -2092,6 +2092,7 @@
         if (envelope) {
           envelope.setAttribute('aria-label', lang === 'es' ? 'Toca para abrir la invitación' : "Tocca per aprire l'invito");
         }
+        if (window._updateCalendarLink) window._updateCalendarLink(lang);
       }
 
       // Auto-detect: se il browser è in spagnolo, apri in ES
@@ -2127,16 +2128,39 @@
       });
     })();
 
-    // ---- Aggiungi al calendario: Android → Google Calendar, altri → .ics ----
+    // ---- Aggiungi al calendario: Android → Google Calendar, altri → .ics. Bilingue. ----
     (function() {
       var link = document.getElementById('addToCalendar');
       if (!link) return;
-      if (/Android/i.test(navigator.userAgent)) {
-        link.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Matrimonio+Carmen+%26+Marcello&dates=20261003T143000Z/20261003T230000Z&location=Basilica+dell%27Incoronata+Madre+del+Buon+Consiglio%2C+Via+Capodimonte+13%2C+80136+Napoli&details=Cerimonia+alle+16%3A30+presso+Basilica+dell%27Incoronata%2C+poi+ricevimento+a+Tenuta+Torelli+dalle+18%3A00.';
-        link.removeAttribute('download');
-        link.setAttribute('target', '_blank');
-        link.setAttribute('rel', 'noopener');
+      var isAndroid = /Android/i.test(navigator.userAgent);
+
+      var googleLinks = {
+        it: 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Matrimonio+Carmen+%26+Marcello&dates=20261003T143000Z/20261003T230000Z&location=Basilica+dell%27Incoronata+Madre+del+Buon+Consiglio%2C+Via+Capodimonte+13%2C+80136+Napoli&details=Cerimonia+alle+16%3A30+presso+Basilica+dell%27Incoronata%2C+poi+ricevimento+a+Tenuta+Torelli+dalle+18%3A00.',
+        es: 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Boda+Carmen+%26+Marcello&dates=20261003T143000Z/20261003T230000Z&location=Bas%C3%ADlica+dell%27Incoronata+Madre+del+Buon+Consiglio%2C+Via+Capodimonte+13%2C+80136+N%C3%A1poles&details=Ceremonia+a+las+16%3A30+en+la+Bas%C3%ADlica+dell%27Incoronata%2C+luego+recepci%C3%B3n+en+Tenuta+Torelli+desde+las+18%3A00.'
+      };
+
+      var icsFiles = {
+        it: 'matrimonio.ics',
+        es: 'matrimonio-es.ics'
+      };
+
+      function update(lang) {
+        lang = (lang === 'es') ? 'es' : 'it';
+        if (isAndroid) {
+          link.href = googleLinks[lang];
+          link.removeAttribute('download');
+          link.setAttribute('target', '_blank');
+          link.setAttribute('rel', 'noopener');
+        } else {
+          link.href = icsFiles[lang];
+          link.setAttribute('download', '');
+          link.removeAttribute('target');
+          link.removeAttribute('rel');
+        }
       }
+
+      window._updateCalendarLink = update;
+      update(document.body.getAttribute('data-lang'));
     })();
 
     // ---- Fade-in allo scroll ----
