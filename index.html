@@ -14,6 +14,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="image" href="basilica.webp" type="image/webp" fetchpriority="high">
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap"></noscript>
   <style>
@@ -1787,7 +1788,7 @@
        PERSONALIZZA QUI: Metti il file MP3 nella stessa
        cartella e aggiorna il nome in src qui sotto.
        ============================================ -->
-  <audio id="bgMusic" loop preload="auto">
+  <audio id="bgMusic" loop preload="metadata">
     <source src="thinking-out-loud-instrumental.mp3" type="audio/mpeg">
   </audio>
 
