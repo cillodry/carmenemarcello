@@ -2538,7 +2538,9 @@
 
       var images = Array.from(items).map(function(item) {
         var img = item.querySelector('img');
-        return { src: img.currentSrc || img.src, alt: img.alt };
+        var source = item.querySelector('source[type="image/webp"]');
+        var webpSrc = (source && source.srcset) ? source.srcset.split(',')[0].trim().split(/\s+/)[0] : null;
+        return { src: webpSrc || img.currentSrc || img.src, alt: img.alt };
       });
 
       var lightbox = document.createElement('div');
