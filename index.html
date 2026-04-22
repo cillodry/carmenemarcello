@@ -1609,13 +1609,9 @@
           <span class="es">Apuntad la fecha</span>
         </p>
         <div class="add-to-calendar-buttons">
-          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Matrimonio+Carmen+%26+Marcello&amp;dates=20261003T143000Z/20261003T230000Z&amp;location=Basilica+dell%27Incoronata+Madre+del+Buon+Consiglio%2C+Via+Capodimonte+13%2C+80136+Napoli&amp;details=Cerimonia+alle+16%3A30+presso+Basilica+dell%27Incoronata%2C+poi+ricevimento+a+Tenuta+Torelli+dalle+18%3A00." target="_blank" rel="noopener" class="calendar-btn">
-            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            Google Calendar
-          </a>
-          <a href="matrimonio.ics" download class="calendar-btn">
-            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Apple / Outlook
+          <a id="addToCalendar" href="matrimonio.ics" download class="calendar-btn">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="12" y1="14" x2="12" y2="18"/><line x1="10" y1="16" x2="14" y2="16"/></svg>
+            <span class="it">Aggiungi al calendario</span><span class="es">Añadir al calendario</span>
           </a>
         </div>
       </div>
@@ -2111,6 +2107,18 @@
           nav.classList.remove('open');
         });
       });
+    })();
+
+    // ---- Aggiungi al calendario: Android → Google Calendar, altri → .ics ----
+    (function() {
+      var link = document.getElementById('addToCalendar');
+      if (!link) return;
+      if (/Android/i.test(navigator.userAgent)) {
+        link.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Matrimonio+Carmen+%26+Marcello&dates=20261003T143000Z/20261003T230000Z&location=Basilica+dell%27Incoronata+Madre+del+Buon+Consiglio%2C+Via+Capodimonte+13%2C+80136+Napoli&details=Cerimonia+alle+16%3A30+presso+Basilica+dell%27Incoronata%2C+poi+ricevimento+a+Tenuta+Torelli+dalle+18%3A00.';
+        link.removeAttribute('download');
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener');
+      }
     })();
 
     // ---- Fade-in allo scroll ----
