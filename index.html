@@ -995,6 +995,45 @@
       margin-bottom: 1rem;
     }
 
+    .footer-share {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.2rem;
+      padding: 0.5rem 1.1rem;
+      background: transparent;
+      color: var(--color-text-light);
+      border: 1px solid rgba(74, 64, 57, 0.18);
+      border-radius: 50px;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .footer-share:hover {
+      border-color: var(--color-sage-dark);
+      color: var(--color-sage-dark);
+    }
+
+    .footer-share svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .footer-share.copied {
+      background: var(--color-sage);
+      border-color: var(--color-sage);
+      color: var(--color-white);
+    }
+
     /* ============================================
        MUSIC PLAYER
        ============================================ */
@@ -1930,6 +1969,10 @@
     <!-- PERSONALIZZA QUI: Hashtag -->
     <p class="footer-hashtag">#CarmenEMarcello2026</p>
     <p><span class="it">Con amore, vi aspettiamo.</span><span class="es">Con amor, os esperamos.</span></p>
+    <button class="footer-share" id="shareSiteBtn" type="button">
+      <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      <span class="share-label"><span class="it">Condividi il sito</span><span class="es">Compartir el sitio</span></span>
+    </button>
   </footer>
 
   <!-- ============================================
@@ -2196,6 +2239,40 @@
 
       window._updateCalendarLink = update;
       update(document.body.getAttribute('data-lang'));
+    })();
+
+    // ---- Share site button ----
+    (function() {
+      var btn = document.getElementById('shareSiteBtn');
+      if (!btn) return;
+      var label = btn.querySelector('.share-label');
+
+      btn.addEventListener('click', function() {
+        var lang = document.body.getAttribute('data-lang') || 'it';
+        var shareData = {
+          title: 'Carmen & Marcello — 3 Ottobre 2026',
+          text: lang === 'es'
+            ? '¡Nos casamos! Os esperamos en nuestra boda en Nápoles el 3 de octubre 2026'
+            : 'Ci sposiamo! Vi aspettiamo al nostro matrimonio a Napoli il 3 ottobre 2026',
+          url: 'https://carmenemarcello.com/'
+        };
+
+        if (navigator.share) {
+          navigator.share(shareData).catch(function() {});
+          return;
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(shareData.url).then(function() {
+            var originalHTML = label.innerHTML;
+            btn.classList.add('copied');
+            label.textContent = lang === 'es' ? 'Enlace copiado!' : 'Link copiato!';
+            setTimeout(function() {
+              btn.classList.remove('copied');
+              label.innerHTML = originalHTML;
+            }, 2000);
+          }).catch(function() {});
+        }
+      });
     })();
 
     // ---- Fade-in allo scroll ----
