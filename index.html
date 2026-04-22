@@ -1867,7 +1867,7 @@
           <circle cx="30" cy="30" r="25" />
           <path d="M20 30l7 7 13-13" stroke-width="2" />
         </svg>
-        <h3><span class="it">Grazie di cuore!</span><span class="es">Gracias de corazón!</span></h3>
+        <h3><span class="it">Grazie di cuore<span class="rsvp-guest-name"></span>!</span><span class="es">Gracias de corazón<span class="rsvp-guest-name"></span>!</span></h3>
         <p><span class="it">La tua conferma è stata registrata. Non vediamo l'ora di festeggiare insieme a te!</span><span class="es">Tu confirmación ha sido registrada. Estamos deseando celebrar contigo!</span></p>
       </div>
     </div>
@@ -2263,6 +2263,12 @@
         menu: document.getElementById('menu').value,
         note: document.getElementById('note').value
       };
+
+      // Personalizza conferma col nome dell'ospite
+      var firstName = (data.nome || '').trim().split(/\s+/)[0];
+      document.querySelectorAll('.rsvp-guest-name').forEach(function(s) {
+        s.textContent = firstName ? ', ' + firstName : '';
+      });
 
       fetch('https://script.google.com/macros/s/AKfycbytZOTIXdeqWi8H-XyXOVVtCWiI1vLYUGQphl_yfVORTY2UeIM3VLGg-LymUwEid26w/exec', {
         method: 'POST',
