@@ -1262,6 +1262,18 @@
       opacity: 0.5;
     }
 
+    .countdown-done {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      color: var(--color-sage-dark);
+      text-align: center;
+      margin-top: 2rem;
+      letter-spacing: 0.05em;
+      text-shadow: 0 2px 12px rgba(250, 248, 245, 0.9);
+      animation: fadeIn 0.8s ease;
+    }
+
     /* ============================================
        GALLERIA FOTO (La Nostra Storia)
        ============================================ */
@@ -1739,6 +1751,11 @@
           <span class="countdown-number" id="cd-secs">--</span>
           <span class="countdown-label"><span class="it">Secondi</span><span class="es">Seg</span></span>
         </div>
+      </div>
+
+      <div class="countdown-done" id="countdown-done" hidden>
+        <span class="it">Ci siamo!</span>
+        <span class="es">¡Empezamos!</span>
       </div>
     </div>
 
@@ -2383,10 +2400,10 @@
         var now = Date.now();
         var diff = wedding - now;
         if (diff <= 0) {
-          document.getElementById('cd-days').textContent = '0';
-          document.getElementById('cd-hours').textContent = '0';
-          document.getElementById('cd-mins').textContent = '0';
-          document.getElementById('cd-secs').textContent = '0';
+          var cd = document.getElementById('countdown');
+          var done = document.getElementById('countdown-done');
+          if (cd) cd.style.display = 'none';
+          if (done) done.hidden = false;
           return;
         }
         var d = Math.floor(diff / 86400000);
