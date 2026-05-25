@@ -2426,6 +2426,8 @@
           }, reducedMotion ? 0 : 1000);
         } else {
           // Mobile: avvia video
+          video.defaultPlaybackRate = 0.5;
+          video.playbackRate = 0.5;
           video.play();
 
           video.addEventListener('ended', function() {
