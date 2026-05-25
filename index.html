@@ -881,10 +881,11 @@
 
     .iban-value {
       font-family: 'Courier New', Courier, monospace;
-      font-size: clamp(0.72rem, 2.5vw, 1rem);
+      font-size: clamp(0.72rem, 2.2vw, 0.95rem);
       color: var(--color-text);
-      letter-spacing: 0.06em;
-      word-break: break-all;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      overflow-x: auto;
       margin-bottom: 1rem;
       padding: 0.7rem 1rem;
       background: rgba(232, 221, 211, 0.25);
