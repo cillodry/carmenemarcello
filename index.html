@@ -2768,6 +2768,42 @@
     })();
 
     // ---- RSVP Form Handler ----
+    // ---- Auto-fit IBAN font to container width ----
+    (function() {
+      function fitIban() {
+        var iban = document.getElementById('ibanValue');
+        if (!iban) return;
+        iban.style.fontSize = '';
+        var styles = window.getComputedStyle(iban);
+        var paddingX = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
+        var available = iban.clientWidth - paddingX - 4;
+        if (available <= 0) return;
+        var probe = document.createElement('span');
+        probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;top:-9999px;left:-9999px;';
+        probe.style.font = styles.font;
+        probe.style.letterSpacing = styles.letterSpacing;
+        probe.textContent = iban.textContent;
+        document.body.appendChild(probe);
+        var natural = probe.getBoundingClientRect().width;
+        document.body.removeChild(probe);
+        if (!natural) return;
+        var base = parseFloat(styles.fontSize);
+        var size = base * (available / natural);
+        size = Math.max(11, Math.min(22, size));
+        iban.style.fontSize = size + 'px';
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fitIban);
+      } else {
+        fitIban();
+      }
+      window.addEventListener('load', fitIban);
+      window.addEventListener('resize', fitIban);
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(fitIban);
+      }
+    })();
+
     // ---- Copia IBAN ----
     function copyIban() {
       var iban = document.getElementById('ibanValue').textContent.replace(/\s/g, '');
