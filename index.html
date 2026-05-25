@@ -2286,7 +2286,7 @@
        PERSONALIZZA QUI: Metti il file MP3 nella stessa
        cartella e aggiorna il nome in src qui sotto.
        ============================================ -->
-  <audio id="bgMusic" loop preload="metadata">
+  <audio id="bgMusic" loop preload="none">
     <source src="thinking-out-loud-instrumental.mp3" type="audio/mpeg">
   </audio>
 
@@ -2770,38 +2770,57 @@
     // ---- RSVP Form Handler ----
     // ---- Auto-fit IBAN font to container width ----
     (function() {
-      function fitIban() {
-        var iban = document.getElementById('ibanValue');
-        if (!iban) return;
-        iban.style.fontSize = '';
+      var iban = null;
+      var widthPerPx = 0;
+      var lastAvailable = -1;
+      var pending = false;
+
+      function measure() {
         var styles = window.getComputedStyle(iban);
-        var paddingX = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
-        var available = iban.clientWidth - paddingX - 4;
-        if (available <= 0) return;
         var probe = document.createElement('span');
         probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;top:-9999px;left:-9999px;';
         probe.style.font = styles.font;
+        probe.style.fontSize = '16px';
         probe.style.letterSpacing = styles.letterSpacing;
         probe.textContent = iban.textContent;
         document.body.appendChild(probe);
-        var natural = probe.getBoundingClientRect().width;
+        widthPerPx = probe.getBoundingClientRect().width / 16;
         document.body.removeChild(probe);
-        if (!natural) return;
-        var base = parseFloat(styles.fontSize);
-        var size = base * (available / natural);
-        size = Math.max(11, Math.min(22, size));
+      }
+
+      function fit() {
+        pending = false;
+        if (!iban || !widthPerPx) return;
+        var styles = window.getComputedStyle(iban);
+        var paddingX = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
+        var available = iban.clientWidth - paddingX - 4;
+        if (available === lastAvailable || available <= 0) return;
+        lastAvailable = available;
+        var size = available / widthPerPx;
+        if (size < 11) size = 11;
+        else if (size > 22) size = 22;
         iban.style.fontSize = size + 'px';
       }
+
+      function schedule() {
+        if (pending) return;
+        pending = true;
+        requestAnimationFrame(fit);
+      }
+
+      function init() {
+        iban = document.getElementById('ibanValue');
+        if (!iban) return;
+        measure();
+        fit();
+      }
+
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', fitIban);
+        document.addEventListener('DOMContentLoaded', init);
       } else {
-        fitIban();
+        init();
       }
-      window.addEventListener('load', fitIban);
-      window.addEventListener('resize', fitIban);
-      if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(fitIban);
-      }
+      window.addEventListener('resize', schedule);
     })();
 
     // ---- Copia IBAN ----
