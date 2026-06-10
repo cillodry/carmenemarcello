@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Napoli e dintorni · Una piccola guida · Carmen &amp; Marcello</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap">
+<style>
+  :root {
+    --ivory: #FAF8F5;
+    --sand: #E8DDD3;
+    --blush: #D4B5A0;
+    --sage: #9CAF88;
+    --sage-dark: #5F7A4D;
+    --text: #4A4039;
+    --text-light: #7A6E63;
+    --accent: #C09E7F;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  body {
+    font-family: 'Cormorant Garamond', 'Georgia', serif;
+    font-size: 10.5pt;
+    line-height: 1.42;
+    color: var(--text);
+    background: #FFFFFF;
+  }
+
+  @page { size: A4; margin: 14mm 15mm 16mm; }
+
+  .page { page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+
+  /* ============ COVER ============ */
+  .cover {
+    height: 266mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: var(--ivory);
+    border: 1px solid var(--blush);
+    padding: 28mm 18mm;
+    position: relative;
+  }
+  .cover-eyebrow {
+    font-size: 11pt;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10mm;
+  }
+  .cover h1 {
+    font-size: 38pt;
+    font-weight: 400;
+    line-height: 1.08;
+    margin-bottom: 6mm;
+    color: var(--text);
+  }
+  .cover-sub {
+    font-size: 14pt;
+    font-style: italic;
+    color: var(--text-light);
+    margin-bottom: 14mm;
+  }
+  .cover-rule {
+    width: 38mm; height: 1px;
+    background: var(--blush);
+    margin: 0 auto 14mm;
+  }
+  .cover-names {
+    font-size: 17pt;
+    letter-spacing: 0.08em;
+    color: var(--sage-dark);
+    margin-bottom: 2.5mm;
+  }
+  .cover-date {
+    font-size: 11.5pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-light);
+  }
+  .cover-intro {
+    margin-top: 16mm;
+    max-width: 118mm;
+    font-size: 11.5pt;
+    font-style: italic;
+    color: var(--text-light);
+    line-height: 1.55;
+  }
+  .cover-heart { color: var(--blush); }
+
+  /* ============ SECTIONS ============ */
+  h2 {
+    font-size: 17pt;
+    font-weight: 500;
+    color: var(--sage-dark);
+    letter-spacing: 0.06em;
+    margin: 0 0 1.5mm;
+  }
+  .section-kicker {
+    font-size: 9pt;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1mm;
+  }
+  .section-lead {
+    font-style: italic;
+    color: var(--text-light);
+    margin-bottom: 5mm;
+    font-size: 10.5pt;
+  }
+  .rule {
+    height: 1px; background: var(--sand);
+    margin: 4mm 0 5mm;
+  }
+
+  h3.zone {
+    font-size: 10pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 4.5mm 0 2.5mm;
+  }
+
+  /* place cards in two columns */
+  .places {
+    column-count: 2;
+    column-gap: 7mm;
+    counter-reset: place;
+  }
+  .place {
+    break-inside: avoid;
+    margin-bottom: 3.6mm;
+    padding-left: 7.5mm;
+    position: relative;
+    counter-increment: place;
+  }
+  .place::before {
+    content: counter(place);
+    position: absolute;
+    left: 0; top: 0.4mm;
+    font-size: 13pt;
+    font-style: italic;
+    color: var(--blush);
+    font-weight: 500;
+  }
+  .place h4, .card h4 {
+    font-size: 11.5pt;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.6mm;
+  }
+  .place p, .card p { color: var(--text); }
+  .tip {
+    display: block;
+    margin-top: 0.8mm;
+    font-size: 9.5pt;
+    font-style: italic;
+    color: var(--sage-dark);
+  }
+  .tip::before { content: "❧ "; color: var(--blush); font-style: normal; }
+
+  /* ============ BOXES ============ */
+  .box {
+    background: #F3EDE6;
+    border: 1px solid var(--sand);
+    padding: 4.5mm 5.5mm;
+    margin: 4mm 0;
+    break-inside: avoid;
+  }
+  .box h4 {
+    font-size: 12pt;
+    color: var(--sage-dark);
+    font-weight: 600;
+    margin-bottom: 1.5mm;
+  }
+  .box p { margin-bottom: 1.5mm; }
+  .box p:last-child { margin-bottom: 0; }
+
+  /* ============ FOOD ============ */
+  .food-group { break-inside: avoid; margin-bottom: 3.2mm; }
+  .food-group h4 {
+    font-size: 10pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 1.4mm;
+  }
+  .food-group ul { list-style: none; }
+  .food-group li {
+    margin-bottom: 1.3mm;
+    padding-left: 4.5mm;
+    position: relative;
+  }
+  .food-group li::before {
+    content: "·";
+    position: absolute; left: 1mm;
+    color: var(--blush);
+    font-weight: 600;
+  }
+  .food-cols { column-count: 2; column-gap: 7mm; }
+  .addr { color: var(--text-light); font-style: italic; }
+
+  /* ============ DINTORNI ============ */
+  .cards { }
+  .card {
+    break-inside: avoid;
+    margin-bottom: 3.6mm;
+    padding-bottom: 3.2mm;
+    border-bottom: 1px solid var(--sand);
+  }
+  .card:last-child { border-bottom: none; }
+  .come {
+    display: block;
+    margin-top: 0.8mm;
+    font-size: 9.5pt;
+    color: var(--sage-dark);
+  }
+  .come strong { font-weight: 600; letter-spacing: 0.04em; }
+
+  /* ============ ITINERARI ============ */
+  .iti { margin-bottom: 4mm; break-inside: avoid; }
+  .iti h4 {
+    font-size: 12.5pt;
+    font-weight: 600;
+    color: var(--sage-dark);
+    margin-bottom: 2mm;
+  }
+  .iti table { width: 100%; border-collapse: collapse; }
+  .iti td {
+    vertical-align: top;
+    padding: 0.9mm 0;
+    border-bottom: 1px dotted var(--sand);
+  }
+  .iti tr:last-child td { border-bottom: none; }
+  .iti td.day {
+    width: 26mm;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--accent);
+    padding-right: 3mm;
+    white-space: nowrap;
+  }
+
+  /* ============ TRASPORTI ============ */
+  .transport { column-count: 2; column-gap: 7mm; }
+  .transport .t {
+    break-inside: avoid;
+    margin-bottom: 2.6mm;
+    padding-left: 4.5mm;
+    position: relative;
+  }
+  .transport .t::before {
+    content: "→";
+    position: absolute; left: 0;
+    color: var(--blush);
+  }
+  .transport .t strong { font-weight: 600; }
+
+  /* ============ CHIUSURA ============ */
+  .closing {
+    height: 266mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: var(--ivory);
+    border: 1px solid var(--blush);
+    padding: 28mm 24mm;
+  }
+  .colophon {
+    font-style: italic;
+    color: var(--text-light);
+    font-size: 12pt;
+    line-height: 1.7;
+    max-width: 120mm;
+  }
+  .colophon .names {
+    font-style: normal;
+    font-size: 17pt;
+    color: var(--sage-dark);
+    letter-spacing: 0.08em;
+  }
+
+  /* ============ SCREEN ONLY ============ */
+  @media screen {
+    body { padding: 24px; max-width: 820px; margin: 0 auto; }
+    .page { margin-bottom: 48px; }
+    .cover { height: auto; min-height: 80vh; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== PAGINA 1 · COPERTINA ==================== -->
+<div class="page cover">
+  <div class="cover-eyebrow">3 ottobre 2026 · Napoli</div>
+  <h1>Napoli<br>e dintorni</h1>
+  <div class="cover-sub">una piccola guida per i nostri invitati</div>
+  <div class="cover-rule"></div>
+  <div class="cover-names">Carmen <span class="cover-heart">♥</span> Marcello</div>
+  <div class="cover-date">carmenemarcello.com</div>
+  <p class="cover-intro">
+    Napoli per noi è famiglia. In queste pagine trovate i posti che amiamo:
+    cosa vedere in città, dove mangiare bene, le gite fuori porta e due
+    itinerari pronti, per chi resta un weekend e per chi si prende una settimana.
+    Godetevela, e poi raccontateci tutto al ricevimento.
+  </p>
+</div>
+
+<!-- ==================== PAGINA 2 · NAPOLI, CENTRO STORICO ==================== -->
+<div class="page">
+  <div class="section-kicker">La città</div>
+  <h2>Napoli da vedere</h2>
+  <p class="section-lead">Dodici tappe, dai vicoli al mare: si girano quasi tutte a piedi.</p>
+
+  <h3 class="zone">Il centro storico</h3>
+  <div class="places">
+    <div class="place">
+      <h4>Basilica di Santa Chiara e Chiostro Maiolicato</h4>
+      <p>Il gotico angioino del Trecento e, dietro, il chiostro con le riggiole
+      maiolicate del Vaccaro: scene contadine dipinte su 64 pilastri. Uno dei
+      luoghi più sereni del centro.</p>
+    </div>
+    <div class="place">
+      <h4>Chiesa del Gesù Nuovo</h4>
+      <p>Da fuori sembra una fortezza (era un palazzo del Quattrocento, il bugnato
+      a punta di diamante è suo), dentro è barocco pieno. Proprio di fronte a
+      Santa Chiara: due chiese, una piazza.</p>
+    </div>
+    <div class="place">
+      <h4>San Domenico Maggiore</h4>
+      <p>Piazza simbolo di Napoli e chiesa voluta da Carlo II d'Angiò, dove
+      studiò Tommaso d'Aquino. Intorno, i caffè dove fermarsi a guardare la
+      città che passa.</p>
+    </div>
+    <div class="place">
+      <h4>Cappella Sansevero e il Cristo Velato</h4>
+      <p>Il velo di marmo più famoso del mondo, le Macchine anatomiche, l'enigma
+      del principe di Sansevero. Piccola, preziosa, indimenticabile.</p>
+      <span class="tip">Prenotazione online obbligatoria su museosansevero.it: i biglietti
+      escono 60 giorni prima e finiscono in fretta. Per il weekend del matrimonio,
+      prenotate ai primi di agosto.</span>
+    </div>
+    <div class="place">
+      <h4>San Gregorio Armeno</h4>
+      <p>La via dei presepi, aperta tutto l'anno: pastori d'autore, Pulcinella
+      e centinaia di statuette di Maradona. A ottobre si gira senza la folla
+      di Natale.</p>
+    </div>
+    <div class="place">
+      <h4>Napoli Sotterranea</h4>
+      <p>Quaranta metri sotto i vicoli: le cave greche, l'acquedotto romano,
+      i rifugi della guerra. Visita guidata di circa un'ora e mezza.</p>
+      <span class="tip">Si scende con candele e passaggi stretti: portate una felpa,
+      sotto fa fresco tutto l'anno.</span>
+    </div>
+  </div>
+
+  <h3 class="zone">Verso il mare</h3>
+  <div class="places" style="counter-reset: place 6;">
+    <div class="place">
+      <h4>Piazza del Plebiscito e Palazzo Reale</h4>
+      <p>Il colonnato di San Francesco di Paola da una parte, il Palazzo Reale
+      dall'altra: il salotto monumentale della città, a due passi dal mare.</p>
+    </div>
+    <div class="place">
+      <h4>Teatro San Carlo e Galleria Umberto I</h4>
+      <p>Il teatro d'opera più antico d'Europa (1737), tutto oro e velluto rosso;
+      accanto, la Galleria con la cupola di ferro e vetro. Visite guidate quando
+      non ci sono prove.</p>
+    </div>
+    <div class="place">
+      <h4>Via Toledo e la metro Toledo</h4>
+      <p>Un chilometro e mezzo di passeggiata e negozi fino a Piazza Dante.
+      Scendete nella stazione Toledo della Linea 1, il mosaico blu di Tusquets:
+      è stata nominata la stazione più bella d'Europa.</p>
+    </div>
+    <div class="place">
+      <h4>Castel dell'Ovo e Lungomare Caracciolo</h4>
+      <p>Il castello più antico di Napoli, sull'isolotto di Megaride: la leggenda
+      vuole che Virgilio vi abbia nascosto un uovo che regge tutta la fortezza.
+      Da lì, tre chilometri di lungomare fino a Mergellina. Il terzo castello,
+      il Maschio Angioino, lo incrociate a Piazza Municipio.</p>
+    </div>
+  </div>
+
+  <h3 class="zone">In alto</h3>
+  <div class="places" style="counter-reset: place 10;">
+    <div class="place">
+      <h4>Certosa di San Martino e Castel Sant'Elmo</h4>
+      <p>Si sale in funicolare al Vomero: la Certosa barocca, il giardino
+      terrazzato e la vista che taglia la città in due lungo Spaccanapoli.
+      Il belvedere più bello di Napoli.</p>
+    </div>
+    <div class="place">
+      <h4>Posillipo e la Gaiola</h4>
+      <p>Il quartiere del tramonto: dal greco <em>Pausillipon</em>, «che fa cessare
+      gli affanni». In fondo, l'isolotto «maledetto» della Gaiola e il suo parco
+      marino protetto, visitabile con battello a fondo trasparente o snorkeling.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PAGINA 3 · CAPODIMONTE + A TAVOLA ==================== -->
+<div class="page">
+  <div class="box" style="margin-top:0;">
+    <h4>A due passi dal matrimonio: Capodimonte</h4>
+    <p>La cerimonia è alla Basilica dell'Incoronata e il ricevimento a Tenuta
+    Torelli: sarete già sulla collina di Capodimonte, quindi approfittatene.</p>
+    <p><strong>Museo e Real Bosco di Capodimonte</strong> · La reggia borbonica con una
+    delle pinacoteche più importanti d'Italia: Caravaggio, Tiziano, Parmigianino.
+    Il Bosco intorno è il parco più amato dai napoletani, perfetto per smaltire
+    il ricevimento. <em>Museo chiuso il mercoledì, 8:30–19:30; il Bosco è aperto
+    tutti i giorni ed è gratuito.</em></p>
+    <p><strong>Catacombe di San Gennaro</strong> · L'ingresso è proprio accanto alla chiesa
+    della cerimonia: due livelli di tufo scavati dal II secolo, con gli affreschi
+    paleocristiani. Visita guidata, meglio prenotare su catacombedinapoli.it.</p>
+  </div>
+
+  <div class="rule"></div>
+
+  <div class="section-kicker">A tavola</div>
+  <h2>Dove mangiare e bere</h2>
+  <p class="section-lead">I classici collaudati, più qualche posto del cuore.</p>
+
+  <div class="food-cols">
+    <div class="food-group">
+      <h4>La pizza</h4>
+      <ul>
+        <li><strong>Gino e Toto Sorbillo</strong> <span class="addr">· Via dei Tribunali 32</span><br>
+        La pizzeria simbolo dei Tribunali: la coda c'è, ma scorre e vale.</li>
+        <li><strong>L'Antica Pizzeria Da Michele</strong> <span class="addr">· Via Cesare Sersale 1</span><br>
+        Solo margherita e marinara dal 1870. Andate fuori orario di punta.</li>
+      </ul>
+    </div>
+    <div class="food-group">
+      <h4>La pizza fritta</h4>
+      <ul>
+        <li><strong>Isabella De Cham</strong> <span class="addr">· Via Arena alla Sanità 27</span><br>
+        La regina del genere, nel cuore della Sanità: Tre Spicchi Gambero Rosso.</li>
+        <li><strong>Zia Esterina Sorbillo</strong> <span class="addr">· Piazza Trieste e Trento 53</span><br>
+        Da passeggio, comoda anche prima del San Carlo.</li>
+      </ul>
+    </div>
+    <div class="food-group">
+      <h4>A cena</h4>
+      <ul>
+        <li><strong>Salumeria Upnea</strong> <span class="addr">· Via S. Giovanni Maggiore Pignatelli 35</span><br>
+        Cucina napoletana rivisitata in chiave moderna, per una cena tranquilla
+        in centro.</li>
+        <li><strong>Pizzeria e Trattoria del Purgatorio</strong> <span class="addr">· Via dei Tribunali 351</span><br>
+        Trattoria e pizza nel cuore dei Tribunali: ce ne hanno parlato benissimo.</li>
+      </ul>
+    </div>
+    <div class="food-group">
+      <h4>Il caffè</h4>
+      <ul>
+        <li><strong>Gran Caffè Gambrinus</strong> <span class="addr">· Via Chiaia 1, angolo Plebiscito</span><br>
+        Il caffè letterario della città, dal 1860: stucchi, sfogliatelle e storia.</li>
+        <li><strong>Caffè del Professore</strong> <span class="addr">· Piazza Trieste e Trento 46</span><br>
+        Il caffè alla nocciola che mette d'accordo tutti.</li>
+      </ul>
+    </div>
+    <div class="food-group">
+      <h4>Dolci e gelato</h4>
+      <ul>
+        <li><strong>Sfogliatella</strong> · calda da <strong>Attanasio</strong>
+        <span class="addr">(Vico Ferrovia 1, vicino alla stazione)</span> o da
+        <strong>Pintauro</strong> <span class="addr">(Via Toledo 275)</span>: riccia o frolla,
+        scegliete voi (poi prendetele entrambe).</li>
+        <li><strong>Babà</strong> · da <strong>Scaturchio</strong> <span class="addr">(Piazza San
+        Domenico Maggiore 19)</span>, istituzione dal 1903: già che ci siete, provate
+        il ministeriale.</li>
+        <li><strong>Gelato</strong> · <strong>Mennella</strong> <span class="addr">(Via Carducci 45)</span>
+        o <strong>Casa Infante</strong> <span class="addr">(Via Toledo 258)</span>.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="box">
+    <h4>I nostri preferiti</h4>
+    <p>Quelli dove vi manderemmo a occhi chiusi: le <strong>graffe di Chalet Ciro</strong>
+    sul lungomare di Mergellina (Via Caracciolo), calde e zuccherate fino a notte fonda ·
+    i <strong>taralli 'nzogna e pepe della Taralleria Napoletana</strong> (Piazza San
+    Domenico Maggiore 18), da mangiare camminando · la <strong>pizza fritta di Isabella
+    De Cham</strong> alla Sanità · e le <strong>sfogliatelle calde di Attanasio</strong>,
+    appena sfornate, prima di prendere il treno.</p>
+  </div>
+</div>
+
+<!-- ==================== PAGINA 4 · I DINTORNI ==================== -->
+<div class="page">
+  <div class="section-kicker">Fuori porta</div>
+  <h2>I dintorni</h2>
+  <p class="section-lead">Tutte gite in giornata da Napoli, una più bella dell'altra.</p>
+
+  <div class="cards">
+    <div class="card">
+      <h4>Costiera Amalfitana · Positano, Amalfi, Ravello</h4>
+      <p>La strada a picco sul mare più famosa del mondo. Positano in verticale,
+      il Duomo di Amalfi, e Ravello in alto con i giardini di Villa Rufolo e
+      Villa Cimbrone: la terrazza sull'infinito.</p>
+      <span class="come"><strong>Come:</strong> treno fino a Sorrento e poi bus SITA; traghetto
+      da Salerno; oppure barca diretta Napoli–Positano (~31€, 1h15, booking.positanojet.it).
+      A inizio ottobre i battelli sono a fine stagione: controllate gli orari online.</span>
+    </div>
+    <div class="card">
+      <h4>Sorrento</h4>
+      <p>Affacciata sul golfo tra i limoneti: il centro si gira in un pomeriggio,
+      tra Piazza Tasso, Marina Grande e un limoncello al tramonto. Comodissima
+      base di partenza per la Costiera.</p>
+      <span class="come"><strong>Come:</strong> Campania Express o Circumvesuviana da
+      Napoli, circa un'ora.</span>
+    </div>
+    <div class="card">
+      <h4>Pompei ed Ercolano</h4>
+      <p>La città romana fermata dal Vesuvio nel 79 d.C.: per Pompei servono
+      almeno quattro ore (e scarpe comode). Ercolano è più piccola e meglio
+      conservata, perfetta in mezza giornata se il tempo è poco.</p>
+      <span class="come"><strong>Come:</strong> Campania Express o Circumvesuviana, fermate
+      «Pompei Scavi» ed «Ercolano Scavi»; per Pompei anche treno o bus Trenitalia
+      (~3,30€, comodi dall'app). Ingressi online su pompeiisites.org per saltare la fila.</span>
+    </div>
+    <div class="card">
+      <h4>Vesuvio</h4>
+      <p>La camminata sul Gran Cono: 30–40 minuti di salita su sterrato e il
+      cratere che fuma sotto i piedi, con tutto il golfo intorno. Una delle viste
+      più belle della Campania.</p>
+      <span class="come"><strong>Come:</strong> navette da Ercolano o Pompei; biglietto del
+      parco solo online (vesuviopark.vivaticket.it), orario d'ingresso contingentato.</span>
+    </div>
+    <div class="card">
+      <h4>Le isole · Capri, Procida, Ischia</h4>
+      <p><strong>Capri</strong> è il mito: i Faraglioni, Anacapri, i Giardini di Augusto.
+      <strong>Procida</strong>, Capitale della Cultura 2022, è la più autentica: case color
+      pastello e il borgo della Corricella. <strong>Ischia</strong> è l'isola verde,
+      famosa per le terme e il Castello Aragonese.</p>
+      <span class="come"><strong>Come:</strong> aliscafi dal Molo Beverello tutto l'anno:
+      Procida ~40 min, Ischia ~1 ora, Capri ~50 min. D'inverno e in autunno il mare
+      mosso può cancellare qualche corsa: tenete d'occhio gli avvisi.</span>
+    </div>
+    <div class="card">
+      <h4>Reggia di Caserta</h4>
+      <p>La Versailles dei Borbone: 1.200 stanze, lo scalone monumentale e un
+      parco di tre chilometri con le cascate e il Giardino Inglese. Dentro ci si
+      perde, in senso buono.</p>
+      <span class="come"><strong>Come:</strong> treno regionale da Napoli Centrale, ~40 minuti.
+      <strong>Chiusa il martedì</strong>; biglietto completo 14€ (appartamenti + parco).</span>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PAGINA 5 · ITINERARI + COME MUOVERSI ==================== -->
+<div class="page">
+  <div class="section-kicker">Su misura</div>
+  <h2>Due itinerari pronti</h2>
+  <p class="section-lead">Per chi viene solo per noi e per chi si prende una vacanza vera.</p>
+
+  <div class="iti">
+    <h4>Il weekend lungo · venerdì 2 → domenica 4 (o lunedì 5)</h4>
+    <table>
+      <tr>
+        <td class="day">Venerdì</td>
+        <td>Arrivo e centro storico: Spaccanapoli, Santa Chiara, San Gregorio
+        Armeno e, se avete prenotato, il Cristo Velato. La sera, pizza ai
+        Tribunali e primo babà.</td>
+      </tr>
+      <tr>
+        <td class="day">Sabato</td>
+        <td>Mattina lenta verso il mare: Plebiscito, caffè da Gambrinus,
+        lungomare fino a Castel dell'Ovo. Poi avete un impegno alle 16:30
+        alla Basilica dell'Incoronata <span class="cover-heart">♥</span>, e si balla
+        fino a notte a Tenuta Torelli.</td>
+      </tr>
+      <tr>
+        <td class="day">Domenica</td>
+        <td>Con calma, a scelta: Pompei in mezza giornata, la Certosa di
+        San Martino in funicolare, oppure recupero dolce a Posillipo.</td>
+      </tr>
+      <tr>
+        <td class="day">Lunedì</td>
+        <td>Se restate: Museo di Capodimonte (a due passi da dove avete
+        ballato) e una passeggiata nel Bosco prima di partire.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="iti">
+    <h4>La settimana · sette giorni, con il matrimonio in mezzo</h4>
+    <table>
+      <tr><td class="day">Giorno 1–2</td>
+        <td>Napoli: un giorno per il centro storico e uno per il mare e il
+        Vomero (Plebiscito, lungomare, Certosa di San Martino).</td></tr>
+      <tr><td class="day">Giorno 3</td>
+        <td>Il matrimonio: mattina libera e leggera, dalle 16:30 siete nostri.</td></tr>
+      <tr><td class="day">Giorno 4</td>
+        <td>Pompei (e Vesuvio per i camminatori, nello stesso giorno con la
+        navetta).</td></tr>
+      <tr><td class="day">Giorno 5</td>
+        <td>Costiera Amalfitana: Positano e Amalfi, o la quiete di Ravello.</td></tr>
+      <tr><td class="day">Giorno 6</td>
+        <td>Un'isola: Procida per l'atmosfera, Capri per il mito, Ischia per
+        le terme.</td></tr>
+      <tr><td class="day">Giorno 7</td>
+        <td>Jolly: la Reggia di Caserta (non di martedì!), Ercolano, o ancora
+        Napoli: Capodimonte, le Catacombe, la Sotterranea.</td></tr>
+    </table>
+  </div>
+
+  <div class="rule"></div>
+
+  <div class="section-kicker">In pratica</div>
+  <h2>Come muoversi</h2>
+  <div class="transport" style="margin-top:3mm;">
+    <div class="t"><strong>Dall'aeroporto</strong> · Alibus per Stazione Centrale e porto
+    (~5€, 20–30 min, biglietto anche a bordo) o taxi a tariffa fissa: chiedetela
+    sempre, è un vostro diritto.</div>
+    <div class="t"><strong>In città</strong> · Il centro si gira a piedi. Linea 1 del metrò
+    (le «stazioni dell'arte») per Toledo, Municipio e il museo; funicolari per
+    il Vomero.</div>
+    <div class="t"><strong>Per Pompei e Sorrento</strong> · Campania Express: posti garantiti
+    e aria condizionata, 15€ a tratta, 8 corse al giorno, biglietti su www.eavsrl.it.
+    In alternativa la Circumvesuviana (pochi euro, ma affollata) o, per Pompei,
+    Trenitalia da ~3,30€.</div>
+    <div class="t"><strong>Per le isole</strong> · Aliscafi dal Molo Beverello (10 minuti a
+    piedi dal Plebiscito), traghetti più lenti da Calata Porta di Massa.</div>
+    <div class="t"><strong>Per la Costiera</strong> · Treno fino a Sorrento + bus SITA, oppure
+    traghetto da Salerno; a ottobre verificate gli orari di fine stagione.</div>
+    <div class="t"><strong>In auto</strong> · Se girate molto fuori città, il noleggio è la
+    scelta più comoda: ritiratela quando lasciate Napoli, in città non vi serve
+    (ZTL, traffico e parcheggi sono un tema).</div>
+    <div class="t"><strong>Ottobre a Napoli</strong> · 18–24°, tanto sole e qualche acquazzone
+    improvviso: un ombrello pieghevole in borsa e siete a posto.</div>
+  </div>
+
+</div>
+
+<!-- ==================== PAGINA 6 · CHIUSURA ==================== -->
+<div class="page closing">
+  <div class="colophon">
+    <div class="cover-rule" style="margin-bottom:10mm;"></div>
+    <p>Con un grazie speciale a Teresa e Gian Marco,<br>i cui consigli di qualche anno fa
+    hanno fatto da bussola<br>a questa piccola guida.</p>
+    <p style="margin-top:8mm; font-size:14pt;">Vi aspettiamo. <span class="cover-heart">♥</span></p>
+    <p class="names" style="margin-top:8mm;">Carmen &amp; Marcello</p>
+    <p style="font-size:10.5pt; margin-top:2mm; letter-spacing:0.14em;">3 OTTOBRE 2026 · CARMENEMARCELLO.COM</p>
+    <div class="cover-rule" style="margin-top:10mm; margin-bottom:0;"></div>
+  </div>
+</div>
+
+</body>
+</html>
